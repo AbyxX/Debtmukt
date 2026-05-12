@@ -536,7 +536,7 @@
   <div class="elig-form-title">Start Your Free<br>Debt Analysis</div>
   <div class="elig-form-sub">Takes 2 minutes. No commitment required.</div>
 
-  <form id="eligForm" novalidate>
+  <form id="eligForm" novalidate onsubmit="handleEligSubmit(event)">
     <div class="form-row">
       <div class="form-field">
         <label>First Name</label>
@@ -627,7 +627,7 @@
       <div class="section-label">Got Questions?</div>
       <h2 class="section-headline">Frequently Asked<br>Questions</h2>
       <p class="section-sub" style="margin-bottom: 32px;">Everything you need to know before taking the first step toward financial freedom.</p>
-      <button class="nav-cta" style="padding: 12px 28px; font-size: 0.9rem;">Talk to an Expert</button>
+      <button class="nav-cta" style="padding: 12px 28px; font-size: 0.9rem;" type="button" onclick="document.getElementById('consultation').scrollIntoView({behavior:'smooth'})">Talk to an Expert</button>
     </div>
 
     <div class="faq-list">
@@ -686,7 +686,7 @@
   <h2 class="cta-banner-headline">Your Financial Freedom<br>Starts Today</h2>
   <p class="cta-banner-sub">Don't wait for things to get worse. Get a free analysis today that can save you lakhs and years of stress.</p>
   <div class="cta-buttons">
-    <button class="btn-white">Get Started Now →</button>
+    <button class="btn-white" type="button" onclick="document.getElementById('consultation').scrollIntoView({behavior:'smooth'})">Get Started Now →</button>
     <button class="btn-outline-white">
       <span>📞</span> Call +91 98765 43210
     </button>
@@ -746,5 +746,22 @@
 </footer>
 
 <script src="script.js"></script>
+<script>
+function handleEligSubmit(e) {
+  e.preventDefault();
+  var form = document.getElementById('eligForm');
+  var status = document.getElementById('eligStatus');
+  var firstName = form.querySelector('[name="firstName"]').value.trim();
+  var phone = form.querySelector('[name="phone"]').value.trim();
+  if (!firstName || !phone) {
+    status.style.color = '#c0392b';
+    status.textContent = 'Please fill in your name and phone number.';
+    return;
+  }
+  status.style.color = 'var(--green-dark, #1a7a4a)';
+  status.textContent = '✓ Thanks! Our team will reach out to you shortly.';
+  form.querySelector('[type="submit"]').disabled = true;
+}
+</script>
 </body>
 </html>
