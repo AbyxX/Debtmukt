@@ -260,6 +260,61 @@ if (heroLeadForm) {
     update();
   })();
 
+  // Eligibility form submission
+  const eligForm = document.getElementById('eligForm');
+  const eligStatus = document.getElementById('eligStatus');
+
+  if (eligForm) {
+    eligForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const firstName = eligForm.querySelector('[name="firstName"]').value.trim();
+      const phone     = eligForm.querySelector('[name="phone"]').value.trim();
+
+      if (!firstName || !phone) {
+        eligStatus.style.color = '#c0392b';
+        eligStatus.textContent = 'Please fill in your name and phone number.';
+        return;
+      }
+
+      const submitBtn = eligForm.querySelector('[type="submit"]');
+      submitBtn.textContent = 'Submitting...';
+      submitBtn.disabled = true;
+      eligStatus.textContent = '';
+
+      const formData = {
+        name:      firstName + ' ' + (eligForm.querySelector('[name="lastName"]').value.trim()),
+        phone:     phone,
+        email:     '',
+        issue:     '',
+        amount:    eligForm.querySelector('[name="amount"]').value,
+        situation: eligForm.querySelector('[name="situation"]') ? eligForm.querySelector('[name="situation"]').value : '',
+        source:    'Eligibility Form'
+      };
+
+      const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwBvSy-duYrDA1xjzG3dX-C6ZB6Gbz_34gsJ3cTFHfuRUDbEa7CcC1ojFfFaNaONTmb8Q/exec';
+
+      try {
+        await fetch(SHEET_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData)
+        });
+
+        submitBtn.textContent = 'Eligibility Checked ✓';
+        eligStatus.style.color = 'var(--green-dark, #1a7a4a)';
+        eligStatus.textContent = 'Thank you! Our team will reach out to you shortly.';
+        eligForm.reset();
+      } catch (err) {
+        submitBtn.textContent = 'Check My Eligibility →';
+        submitBtn.disabled = false;
+        eligStatus.style.color = '#c0392b';
+        eligStatus.textContent = 'Something went wrong. Please try again.';
+      }
+    });
+  }
+
   document.querySelectorAll('[data-scroll-consult]').forEach((button) => {
     button.addEventListener('click', () => {
       const target = document.getElementById('heroLeadForm');
