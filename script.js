@@ -95,7 +95,7 @@ if (heroLeadForm) {
       amount: heroLeadForm.querySelector('[name="amount"]').value
     };
 
-    const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwoPmLkiBONqspvkXAhZNrPaVp5wZAoyhX0fXnLHVPe3c5a6EZZ1Y6TaaMf6Kb7DJfM/exec';  // ← replace this
+    const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwBvSy-duYrDA1xjzG3dX-C6ZB6Gbz_34gsJ3cTFHfuRUDbEa7CcC1ojFfFaNaONTmb8Q/exec';  // ← replace this
 
     try {
       await fetch(SHEET_URL, {
