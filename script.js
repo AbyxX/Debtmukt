@@ -1,4 +1,4 @@
-  // FAQ toggle
+// FAQ toggle
   function toggleFaq(el) {
     const item = el.parentElement;
     const isOpen = item.classList.contains('open');
@@ -88,11 +88,13 @@ if (heroLeadForm) {
     submitButton.disabled = true;
 
     const formData = {
-      name:   heroLeadForm.querySelector('[name="name"]').value,
-      phone:  heroLeadForm.querySelector('[name="phone"]').value,
-      email:  heroLeadForm.querySelector('[name="email"]').value,
-      issue:  heroLeadForm.querySelector('[name="issue"]').value,
-      amount: heroLeadForm.querySelector('[name="amount"]').value
+      name:      heroLeadForm.querySelector('[name="name"]').value,
+      phone:     heroLeadForm.querySelector('[name="phone"]').value,
+      email:     heroLeadForm.querySelector('[name="email"]').value,
+      issue:     heroLeadForm.querySelector('[name="issue"]').value,
+      amount:    heroLeadForm.querySelector('[name="amount"]').value,
+      situation: '',
+      source:    'Hero Form'
     };
 
     const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwBvSy-duYrDA1xjzG3dX-C6ZB6Gbz_34gsJ3cTFHfuRUDbEa7CcC1ojFfFaNaONTmb8Q/exec';  // ← replace this
@@ -263,6 +265,7 @@ if (heroLeadForm) {
   // Eligibility form submission
   const eligForm = document.getElementById('eligForm');
   const eligStatus = document.getElementById('eligStatus');
+  const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwBvSy-duYrDA1xjzG3dX-C6ZB6Gbz_34gsJ3cTFHfuRUDbEa7CcC1ojFfFaNaONTmb8Q/exec';
 
   if (eligForm) {
     eligForm.addEventListener('submit', async (event) => {
@@ -283,16 +286,14 @@ if (heroLeadForm) {
       eligStatus.textContent = '';
 
       const formData = {
-        name:      firstName + ' ' + (eligForm.querySelector('[name="lastName"]').value.trim()),
+        name:      (firstName + ' ' + eligForm.querySelector('[name="lastName"]').value.trim()).trim(),
         phone:     phone,
         email:     '',
         issue:     '',
         amount:    eligForm.querySelector('[name="amount"]').value,
-        situation: eligForm.querySelector('[name="situation"]') ? eligForm.querySelector('[name="situation"]').value : '',
+        situation: eligForm.querySelector('[name="situation"]').value,
         source:    'Eligibility Form'
       };
-
-      const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwBvSy-duYrDA1xjzG3dX-C6ZB6Gbz_34gsJ3cTFHfuRUDbEa7CcC1ojFfFaNaONTmb8Q/exec';
 
       try {
         await fetch(SHEET_URL, {
