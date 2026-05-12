@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DebtMukt — Breathe Again</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#home" aria-label="DebtMukt home">Debt<span>Mukt</span></a>
+  <ul class="nav-links">
+    <li><a href="#process">How It Works</a></li>
+    <li><a href="#calculator">Calculator</a></li>
+    <li><a href="#debt-types">Debt Types</a></li>
+    <li><a href="#testimonials">Success Stories</a></li>
+    <li><a href="#lawyers">Our Lawyers</a></li>
+    <li><a href="#faqs">FAQs</a></li>
+  </ul>
+  <button class="nav-cta" type="button" data-scroll-consult>Free Consultation</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-noise"></div>
+
+  <div class="hero-left">
+    <div class="hero-badge">India's #1 Debt Settlement Platform</div>
+
+    <h1 class="hero-headline">
+      Drowning<br>in debt?<br>
+      We'll help you<br>
+      <span class="breathe">Breathe Again.</span>
+    </h1>
+
+    <p class="hero-sub">
+      Our certified legal experts negotiate directly with banks and NBFCs on your behalf — so you can stop the harassment, cut your debt by up to 80%, and rebuild your life.
+    </p>
+
+    <div class="hero-trust-row">
+      <div class="trust-avatars">
+        <span>AK</span><span>RP</span><span>SM</span><span>VG</span>
+      </div>
+      <div class="trust-text">
+        <strong>10,000+ Indians helped</strong>
+        Across credit cards, personal loans & business debt
+      </div>
+    </div>
+
+    <ul class="hero-bullets">
+      <li>Reduce debt by 40–80%</li>
+      <li>Stop creditor harassment calls</li>
+      <li>Zero upfront legal fees</li>
+      <li>Complete legal process within 12 months</li>
+    </ul>
+  </div>
+
+  <div class="hero-right" id="consultation">
+    <div class="calc-card hero-form-card">
+      <div class="calc-title">Free Consultation</div>
+      <div class="calc-headline">Check what you can do today</div>
+      <p class="hero-form-intro">Share a few basics. Our team will help you understand the next safe step for loan resolution or recovery harassment support.</p>
+
+      <form class="lead-form" id="heroLeadForm" novalidate>
+        <label>
+          Full Name
+          <input type="text" name="name" autocomplete="name" placeholder="Your name" required>
+        </label>
+        <label>
+          Phone Number
+          <input type="tel" name="phone" autocomplete="tel" placeholder="10-digit mobile number" pattern="[0-9]{10}" required>
+        </label>
+        <label>
+          Email Address <span class="optional">optional</span>
+          <input type="email" name="email" autocomplete="email" placeholder="you@example.com">
+        </label>
+        <label>
+          Main Issue
+          <select name="issue" required>
+            <option value="">Choose one</option>
+            <option>Recovery calls or harassment</option>
+            <option>Credit card settlement</option>
+            <option>Personal loan settlement</option>
+            <option>Legal notice or arbitration</option>
+            <option>Multiple loans</option>
+          </select>
+        </label>
+        <label>
+          Total Overdue Amount
+          <select name="amount" required>
+            <option value="">Choose range</option>
+            <option>Below &#8377;1,00,000</option>
+            <option>&#8377;1,00,000 - &#8377;5,00,000</option>
+            <option>&#8377;5,00,000 - &#8377;10,00,000</option>
+            <option>Above &#8377;10,00,000</option>
+          </select>
+        </label>
+        <button class="calc-btn" type="submit">Request My Review</button>
+        <div class="lead-status" id="heroLeadStatus" aria-live="polite"></div>
+        <p class="form-note">No obligation. Results depend on lender policy, documents and case facts.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="stat-number" data-target="500">₹0 Cr+</div>
+    <div class="stat-label">Total Debt Settled</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number" data-target="10000">0+</div>
+    <div class="stat-label">Happy Clients</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number" data-target="15">0+</div>
+    <div class="stat-label">Years Experience</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">4.7 ★</div>
+    <div class="stat-label">Google Rating</div>
+  </div>
+</div>
+
+<!-- ROADMAP -->
+<section class="roadmap reveal" id="process">
+  <div class="roadmap-header">
+    <div class="section-label">The Process</div>
+    <h2 class="section-headline">Your Roadmap to Debt Freedom</h2>
+    <p class="section-sub">A calmer, more structured route from collection pressure to a documented resolution plan.</p>
+  </div>
+
+  <div class="roadmap-flow">
+    <article class="road-card">
+      <div class="road-card-top">
+        <span class="road-num">01</span>
+        <span class="road-tag">Review</span>
+      </div>
+      <h3>Understand your full debt picture</h3>
+      <p>We review your loans, notices, payment status, income pressure and urgent collection issues.</p>
+      <ul>
+        <li>Private case intake</li>
+        <li>Debt and lender mapping</li>
+        <li>Immediate risk check</li>
+      </ul>
+    </article>
+
+    <article class="road-card">
+      <div class="road-card-top">
+        <span class="road-num">02</span>
+        <span class="road-tag">Protect</span>
+      </div>
+      <h3>Document harassment and legal notices</h3>
+      <p>We help organize call logs, WhatsApp messages, emails, statements and notices into one clear case file.</p>
+      <ul>
+        <li>Evidence checklist</li>
+        <li>Notice review</li>
+        <li>Safe response guidance</li>
+      </ul>
+    </article>
+
+    <article class="road-card">
+      <div class="road-card-top">
+        <span class="road-num">03</span>
+        <span class="road-tag">Speak</span>
+      </div>
+      <h3>Lawyer-led communication starts</h3>
+      <p>When required, our legal team can communicate with lenders and recovery teams so you are not handling pressure alone.</p>
+      <ul>
+        <li>Representation notices</li>
+        <li>Calm, documented replies</li>
+        <li>Escalation support</li>
+      </ul>
+    </article>
+
+    <article class="road-card">
+      <div class="road-card-top">
+        <span class="road-num">04</span>
+        <span class="road-tag">Resolve</span>
+      </div>
+      <h3>Negotiate a practical way forward</h3>
+      <p>Based on your ability to pay and lender response, we work toward settlement, restructuring or a suitable closure path.</p>
+      <ul>
+        <li>Settlement strategy</li>
+        <li>Payment documentation</li>
+        <li>Closure record support</li>
+      </ul>
+    </article>
+  </div>
+</section>
+
+<!-- COMPARISON -->
+<section class="comparison reveal" id="calculator">
+  <div class="comparison-shell">
+    <div class="calculator-heading">
+      <div class="section-label">Debt Settlement Calculator</div>
+      <h2 class="section-headline">Save more with DebtMukt</h2>
+      <p class="section-sub">Use this quick estimator to compare an illustrative settlement route with continuing under pressure. The final plan depends on your lenders, documents and case facts.</p>
+    </div>
+
+    <div class="settlement-calc">
+      <div class="calc-tabs" role="tablist" aria-label="Calculator mode">
+        <button class="calc-mode-tab active" type="button" data-mode="settle">Settle Loans</button>
+        <button class="calc-mode-tab" type="button" data-mode="emi">Reduce EMI</button>
+      </div>
+
+      <div class="settlement-grid">
+        <div class="settlement-inputs">
+          <div class="slider-field">
+            <label for="cardDebt">Your credit card loan amount <strong id="cardDebtVal">&#8377;5,00,000</strong></label>
+            <div class="range-control">
+              <input id="cardDebt" class="debt-range" type="range" min="0" max="1500000" step="1000" value="500000" aria-label="Credit card loan amount">
+              <div class="amount-input-wrap" aria-label="Credit card amount input">
+                <span>&#8377;</span>
+                <input id="cardDebtInput" class="amount-input" type="number" min="0" max="1500000" step="1000" value="500000" inputmode="numeric">
+              </div>
+            </div>
+            <div class="range-scale"><span>&#8377;0</span><span>&#8377;15,00,000</span></div>
+          </div>
+
+          <div class="slider-field">
+            <label for="personalDebt">Your personal loan debt amount <strong id="personalDebtVal">&#8377;5,00,000</strong></label>
+            <div class="range-control">
+              <input id="personalDebt" class="debt-range" type="range" min="0" max="2500000" step="1000" value="500000" aria-label="Personal loan debt amount">
+              <div class="amount-input-wrap" aria-label="Personal loan amount input">
+                <span>&#8377;</span>
+                <input id="personalDebtInput" class="amount-input" type="number" min="0" max="2500000" step="1000" value="500000" inputmode="numeric">
+              </div>
+            </div>
+            <div class="range-scale"><span>&#8377;0</span><span>&#8377;25,00,000</span></div>
+          </div>
+
+          <div class="missed-box" aria-label="Recent missed payment">
+            <span>Missed any EMI payment in the last 2 months?</span>
+            <button class="late-option active" type="button" data-late="yes">Yes</button>
+            <button class="late-option" type="button" data-late="no">No</button>
+          </div>
+
+          <button class="calc-action" type="button" data-scroll-consult>Get Help Now</button>
+        </div>
+
+        <div class="settlement-results">
+          <div class="result-summary">
+            <div>
+              <span>Total Debt</span>
+              <strong id="totalDebtOut">&#8377;10,00,000</strong>
+            </div>
+            <div>
+              <span>Loan Free In</span>
+              <strong id="loanMonthsOut">34 Months</strong>
+            </div>
+          </div>
+
+          <div class="pay-card">
+            <span id="payCardLabel">Possible Settlement Payable</span>
+            <strong id="withDebtMuktOut">&#8377;4,50,000</strong>
+          </div>
+
+          <div class="bar-chart" aria-label="Comparison chart">
+            <div class="chart-col">
+              <span class="chart-value" id="withShortOut">&#8377;4.5L</span>
+              <div class="chart-bar chart-with" id="withBar" style="height: 72px"></div>
+              <small>With DebtMukt</small>
+            </div>
+            <div class="chart-col">
+              <span class="chart-value" id="withoutShortOut">&#8377;21.4L</span>
+              <div class="chart-bar chart-without" id="withoutBar" style="height: 190px"></div>
+              <small>Without Support</small>
+            </div>
+          </div>
+
+          <div class="saving-pill">
+            <span>Potential Saving</span>
+            <strong id="savingOut">&#8377;16,93,000</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="calc-disclaimer">Illustration only. Settlement amounts, timelines and savings are not guaranteed and depend on lender policy, account status, documents and negotiations.</p>
+  </div>
+</section>
+
+<!-- HARASSMENT SUPPORT -->
+<section class="harassment-section reveal">
+  <div class="harassment-grid">
+    <div>
+      <div class="section-label">Recovery Harassment Support</div>
+      <h2 class="section-headline">Stop dealing with threatening calls alone.</h2>
+      <p class="section-sub">Our team helps you record facts, respond through proper channels and reduce direct pressure by moving lender conversations into a documented process.</p>
+
+      <div class="harassment-features">
+        <div>
+          <span><strong>Call script support</strong>Know what to say, what not to admit and what to record during recovery calls.</span>
+        </div>
+        <div>
+          <span><strong>Evidence checklist</strong>Collect call logs, messages, notices and payment records safely for review.</span>
+        </div>
+        <div>
+          <span><strong>Escalation guidance</strong>Understand when a matter may need a formal complaint or legal response.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="phone-card" aria-label="Sample support conversation">
+      <div class="phone-top"></div>
+      <div class="chat-bubble lender">Recovery agent has called 18 times today.</div>
+      <div class="chat-bubble us">Document call logs. Avoid arguing. We will help prepare a response.</div>
+      <div class="chat-bubble lender">They contacted my office too.</div>
+      <div class="chat-bubble us">Share screenshots and call details. We will review escalation options.</div>
+      <button class="calc-action" type="button" data-scroll-consult>Get Harassment Help</button>
+    </div>
+  </div>
+</section>
+
+<!-- WHY TRUST -->
+<section class="trust reveal">
+  <div class="trust-header">
+    <div class="section-label">Why Indians Trust Us</div>
+    <h2 class="section-headline">We Fight for You</h2>
+    <p class="section-sub">From RBI compliance to full legal protection — every part of our service is designed around your safety and financial recovery.</p>
+  </div>
+
+  <div class="trust-grid">
+    <div class="trust-card">
+      <div class="trust-icon">🏛️</div>
+      <div class="trust-card-title">RBI Compliant</div>
+      <div class="trust-card-desc">All our processes strictly adhere to RBI guidelines and consumer protection laws. You are fully protected throughout the settlement process.</div>
+    </div>
+    <div class="trust-card">
+      <div class="trust-icon">⚖️</div>
+      <div class="trust-card-title">Certified Legal Experts</div>
+      <div class="trust-card-desc">Our panel of experienced debt resolution lawyers have decades of combined experience negotiating with India's largest banks and NBFCs.</div>
+    </div>
+    <div class="trust-card">
+      <div class="trust-icon">₹</div>
+      <div class="trust-card-title">No Upfront Fees</div>
+      <div class="trust-card-desc">We charge zero fees until your debt is successfully settled. Our interests are 100% aligned with yours — we only win when you win.</div>
+    </div>
+    <div class="trust-card">
+      <div class="trust-icon">🚫</div>
+      <div class="trust-card-title">Stop Harassment</div>
+      <div class="trust-card-desc">The moment you join our programme, our lawyers send legal notices to recovery agents. The calls stop. You get your peace of mind back.</div>
+    </div>
+    <div class="trust-card">
+      <div class="trust-icon">🛡️</div>
+      <div class="trust-card-title">Protect Your Assets</div>
+      <div class="trust-card-desc">We develop strategies to protect your home, business, and assets while working toward a negotiated settlement with your creditors.</div>
+    </div>
+    <div class="trust-card">
+      <div class="trust-icon">📄</div>
+      <div class="trust-card-title">Transparent Pricing</div>
+      <div class="trust-card-desc">No hidden charges. No surprise fees. Every cost is disclosed upfront, and you get a detailed settlement agreement with full legal documentation.</div>
+    </div>
+  </div>
+</section>
+
+<!-- DEBT TYPES -->
+<section class="debt-types reveal" id="debt-types">
+  <div class="debt-types-header">
+    <div class="section-label">Debt Types We Handle</div>
+    <h2 class="section-headline">Support for unsecured loan stress</h2>
+    <p class="section-sub">Clean, case-by-case support for borrowers dealing with repayment pressure, recovery calls, overdue accounts or settlement discussions.</p>
+  </div>
+
+  <div class="debt-type-grid">
+    <article class="debt-type-card">
+      <div class="debt-type-icon">CC</div>
+      <h3>Credit Cards</h3>
+      <p>High interest dues, minimum payment traps, over-limit balances and bank recovery pressure.</p>
+    </article>
+    <article class="debt-type-card">
+      <div class="debt-type-icon">PL</div>
+      <h3>Personal Loans</h3>
+      <p>Missed EMIs, restructuring requests, settlement negotiation and legal notice review.</p>
+    </article>
+    <article class="debt-type-card">
+      <div class="debt-type-icon">BL</div>
+      <h3>Business Loans</h3>
+      <p>MSME cash-flow stress, multiple lenders and documentation for realistic repayment plans.</p>
+    </article>
+    <article class="debt-type-card">
+      <div class="debt-type-icon">NB</div>
+      <h3>NBFC / App Loans</h3>
+      <p>App-based loan pressure, repeated calls, messages and unfair collection behaviour.</p>
+    </article>
+    <article class="debt-type-card">
+      <div class="debt-type-icon">PD</div>
+      <h3>Payday Loans</h3>
+      <p>Short-term borrowing cycles, rollover stress and coordinated repayment or settlement planning.</p>
+    </article>
+    <article class="debt-type-card">
+      <div class="debt-type-icon">ED</div>
+      <h3>Education Loans</h3>
+      <p>Moratorium issues, overdue EMI pressure and communication with lenders or servicers.</p>
+    </article>
+    <article class="debt-type-card">
+      <div class="debt-type-icon">MD</div>
+      <h3>Medical Debt</h3>
+      <p>Unplanned hardship cases where affordability, documentation and lender negotiation matter.</p>
+    </article>
+    <article class="debt-type-card">
+      <div class="debt-type-icon">MD+</div>
+      <h3>Multiple Debts</h3>
+      <p>Several lenders, overlapping calls and a need for one organized legal communication strategy.</p>
+    </article>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials reveal" id="testimonials">
+  <div class="testimonials-header">
+    <div class="section-label">Real Stories</div>
+    <h2 class="section-headline">Real Results, Real People</h2>
+  </div>
+
+  <div class="testimonials-grid">
+    <div class="testi-card">
+      <div class="stars">★★★★★</div>
+      <p class="testi-text">"I was drowning in credit card debt across 4 banks and getting 15+ calls a day from recovery agents. DebtMukt's lawyers stopped the harassment within a week and settled my entire debt in under a year."</p>
+      <div class="testi-author">
+        <div class="testi-avatar">AV</div>
+        <div>
+          <div class="testi-name">Ananya Verma</div>
+          <div class="testi-meta">Bengaluru · Credit Card Debt</div>
+        </div>
+      </div>
+      <div class="testi-savings">
+        <div class="saving-item">
+          <div class="saving-val red">₹6.4L</div>
+          <div class="saving-lbl">Owed</div>
+        </div>
+        <div class="saving-item">
+          <div class="saving-val green">₹2.2L</div>
+          <div class="saving-lbl">Settled</div>
+        </div>
+        <div class="saving-item">
+          <div class="saving-val green">₹4.2L</div>
+          <div class="saving-lbl">Saved</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testi-card">
+      <div class="stars">★★★★★</div>
+      <p class="testi-text">"My business failed and I had taken multiple loans. I thought there was no way out. DebtMukt negotiated with all my lenders simultaneously and got me a deal I never thought was possible."</p>
+      <div class="testi-author">
+        <div class="testi-avatar">RS</div>
+        <div>
+          <div class="testi-name">Rajesh Sharma</div>
+          <div class="testi-meta">Delhi · Business Loan</div>
+        </div>
+      </div>
+      <div class="testi-savings">
+        <div class="saving-item">
+          <div class="saving-val red">₹12L</div>
+          <div class="saving-lbl">Owed</div>
+        </div>
+        <div class="saving-item">
+          <div class="saving-val green">₹3.9L</div>
+          <div class="saving-lbl">Settled</div>
+        </div>
+        <div class="saving-item">
+          <div class="saving-val green">₹8.1L</div>
+          <div class="saving-lbl">Saved</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testi-card">
+      <div class="stars">★★★★★</div>
+      <p class="testi-text">"I was sceptical at first — 'too good to be true.' But from the first consultation call, they were transparent and professional. They settled ₹3L worth of personal loan in just 9 months."</p>
+      <div class="testi-author">
+        <div class="testi-avatar">MK</div>
+        <div>
+          <div class="testi-name">Megha Kaur</div>
+          <div class="testi-meta">Mumbai · Personal Loan</div>
+        </div>
+      </div>
+      <div class="testi-savings">
+        <div class="saving-item">
+          <div class="saving-val red">₹3.5L</div>
+          <div class="saving-lbl">Owed</div>
+        </div>
+        <div class="saving-item">
+          <div class="saving-val green">₹1.2L</div>
+          <div class="saving-lbl">Settled</div>
+        </div>
+        <div class="saving-item">
+          <div class="saving-val green">₹2.3L</div>
+          <div class="saving-lbl">Saved</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ELIGIBILITY -->
+<section class="eligibility reveal">
+  <div class="elig-left">
+    <div class="section-label">Are You Eligible?</div>
+    <h2 class="section-headline" style="color:white">Quick Eligibility<br>Check</h2>
+    <p class="section-sub">Most people who qualify share these three traits. If you tick any of these boxes, we can likely help you — significantly.</p>
+
+    <div class="elig-check">
+      <div class="elig-item">
+        <div class="elig-dot"></div>
+        <div class="elig-text">
+          <strong>Total debt over ₹1,00,000</strong>
+          Across any combination of credit cards, personal loans, or business loans
+        </div>
+      </div>
+      <div class="elig-item">
+        <div class="elig-dot"></div>
+        <div class="elig-text">
+          <strong>Missing payments or struggling to pay</strong>
+          You've fallen behind or can barely make minimum payments each month
+        </div>
+      </div>
+      <div class="elig-item">
+        <div class="elig-dot"></div>
+        <div class="elig-text">
+          <strong>Facing creditor calls or legal notices</strong>
+          Recovery agents are calling, or you've received a legal notice from a lender
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="elig-right">
+    <div class="elig-form-title">Start Your Free<br>Debt Analysis</div>
+    <div class="elig-form-sub">Takes 2 minutes. No commitment required.</div>
+
+    <div class="form-row">
+      <div class="form-field">
+        <label>First Name</label>
+        <input type="text" placeholder="Rahul">
+      </div>
+      <div class="form-field">
+        <label>Last Name</label>
+        <input type="text" placeholder="Mehta">
+      </div>
+    </div>
+    <div class="form-field">
+      <label>Phone Number</label>
+      <input type="tel" placeholder="+91 98765 43210">
+    </div>
+    <div class="form-field">
+      <label>Total Debt Amount</label>
+      <select>
+        <option>₹1L – ₹3L</option>
+        <option>₹3L – ₹7L</option>
+        <option>₹7L – ₹15L</option>
+        <option>₹15L – ₹50L</option>
+        <option>Above ₹50L</option>
+      </select>
+    </div>
+    <div class="form-field">
+      <label>Briefly describe your situation</label>
+      <textarea rows="3" placeholder="I have credit card debt across 3 banks and personal loan EMIs I can no longer afford..." style="resize:none; border:1.5px solid #e0e8e3; border-radius:8px; padding:11px 14px; font-family:'DM Sans',sans-serif; font-size:0.9rem; color:var(--ink); outline:none; background:var(--cream); width:100%; transition:border-color 0.2s;"></textarea>
+    </div>
+    <button class="form-submit">Check My Eligibility →</button>
+    <div style="text-align:center; font-size:0.72rem; color:var(--mist); margin-top:12px;">🔒 Your information is 100% confidential</div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="team reveal" id="lawyers">
+  <div class="team-header">
+    <div class="section-label">Our Experts</div>
+    <h2 class="section-headline">The Lawyers Fighting<br>for Your Rights</h2>
+    <p class="section-sub">Our panel of certified debt resolution attorneys have collectively negotiated over ₹500 Crore in settlements across India.</p>
+  </div>
+
+  <div class="team-grid">
+    <div class="team-card">
+      <div class="team-photo">
+        👨‍⚖️
+        <div class="team-badge">15+ Yrs Exp.</div>
+      </div>
+      <div class="team-name">Adv. Vikram Singh</div>
+      <div class="team-role">Senior Debt Resolution Counsel</div>
+      <div class="team-exp">Delhi High Court • 2,000+ Cases</div>
+    </div>
+    <div class="team-card">
+      <div class="team-photo">
+        👩‍⚖️
+        <div class="team-badge">12+ Yrs Exp.</div>
+      </div>
+      <div class="team-name">Adv. Priya Sharma</div>
+      <div class="team-role">Consumer Rights Specialist</div>
+      <div class="team-exp">Bombay HC • RBI Expert</div>
+    </div>
+    <div class="team-card">
+      <div class="team-photo">
+        👨‍⚖️
+        <div class="team-badge">18+ Yrs Exp.</div>
+      </div>
+      <div class="team-name">Adv. Rajesh Menon</div>
+      <div class="team-role">Banking & NBFC Negotiator</div>
+      <div class="team-exp">Supreme Court • 3,500+ Cases</div>
+    </div>
+    <div class="team-card">
+      <div class="team-photo">
+        👩‍⚖️
+        <div class="team-badge">10+ Yrs Exp.</div>
+      </div>
+      <div class="team-name">Adv. Kavita Rao</div>
+      <div class="team-role">Debt Restructuring Expert</div>
+      <div class="team-exp">Madras HC • MSME Specialist</div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq reveal" id="faqs">
+  <div class="faq-inner">
+    <div>
+      <div class="section-label">Got Questions?</div>
+      <h2 class="section-headline">Frequently Asked<br>Questions</h2>
+      <p class="section-sub" style="margin-bottom: 32px;">Everything you need to know before taking the first step toward financial freedom.</p>
+      <button class="nav-cta" style="padding: 12px 28px; font-size: 0.9rem;">Talk to an Expert</button>
+    </div>
+
+    <div class="faq-list">
+      <div class="faq-item open">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Will debt settlement affect my CIBIL score?
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <div class="faq-a">
+          <div class="faq-a-inner">Yes, settlement will temporarily lower your score. However, once your debts are resolved, we help you with a credit rebuilding plan so your score recovers over time — many clients see significant improvement within 12–18 months.</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Is debt settlement legal in India?
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <div class="faq-a">
+          <div class="faq-a-inner">Absolutely. Debt settlement is completely legal in India and is recognized by RBI guidelines. Banks and NBFCs regularly accept settlement offers, especially when the borrower is in genuine financial hardship. Our lawyers ensure every step is fully compliant.</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Can creditors sue me if I join this program?
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <div class="faq-a">
+          <div class="faq-a-inner">Once you enroll, our lawyers send formal legal representation notices to all your creditors. This legally restricts them from direct contact and most collection activity. If any lender does file suit, our legal team handles it entirely at no extra cost to you.</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          How long does the process usually take?
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <div class="faq-a">
+          <div class="faq-a-inner">Most clients see their first settlement within 6–12 months. Complex cases with multiple creditors can take up to 18–24 months. We give you a realistic timeline during your free consultation based on your specific debt profile.</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          What if I can't afford to pay even the settlement amount?
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <div class="faq-a">
+          <div class="faq-a-inner">We work around your current financial capacity. Settlement amounts are negotiated to a level you can actually afford, and in many cases can be paid in installments. Our goal is a plan that is genuinely sustainable for you — not just the bank.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<div class="cta-banner reveal">
+  <div class="section-label" style="color: rgba(255,255,255,0.6)">Take the First Step</div>
+  <h2 class="cta-banner-headline">Your Financial Freedom<br>Starts Today</h2>
+  <p class="cta-banner-sub">Don't wait for things to get worse. Get a free analysis today that can save you lakhs and years of stress.</p>
+  <div class="cta-buttons">
+    <button class="btn-white">Get Started Now →</button>
+    <button class="btn-outline-white">
+      <span>📞</span> Call +91 98765 43210
+    </button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="nav-logo">Debt<span>Mukt</span></div>
+      <p class="footer-tagline">India's most trusted debt resolution platform, helping thousands of Indians breathe again — legally, ethically, and effectively.</p>
+      <div class="footer-social">
+        <div class="social-btn">in</div>
+        <div class="social-btn">tw</div>
+        <div class="social-btn">fb</div>
+        <div class="social-btn">yt</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="footer-col-title">Quick Links</div>
+      <ul class="footer-links">
+        <li><a href="#process">How It Works</a></li>
+        <li><a href="#testimonials">Success Stories</a></li>
+        <li><a href="#lawyers">Our Lawyers</a></li>
+        <li><a href="#debt-types">Debt Types</a></li>
+        <li><a href="#faqs">FAQs</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <div class="footer-col-title">Contact Us</div>
+      <ul class="footer-links">
+        <li><a href="mailto:info@debtmukt.in">info@debtmukt.in</a></li>
+        <li><a href="tel:+919876543210">+91 98765 43210</a></li>
+        <li><a href="#">Mon–Sat, 9am–7pm</a></li>
+        <li><a href="#">Mumbai, India</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <div class="footer-col-title">Legal</div>
+      <ul class="footer-links">
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#">Disclaimer</a></li>
+        <li><a href="#">RBI Guidelines</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <span>© 2025 DebtMukt. All rights reserved.</span>
+    <span>Results vary based on individual circumstances. Past performance is not a guarantee of future results.</span>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
