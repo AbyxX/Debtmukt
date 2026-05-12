@@ -533,26 +533,27 @@
   </div>
 
   <div class="elig-right">
-    <div class="elig-form-title">Start Your Free<br>Debt Analysis</div>
-    <div class="elig-form-sub">Takes 2 minutes. No commitment required.</div>
+  <div class="elig-form-title">Start Your Free<br>Debt Analysis</div>
+  <div class="elig-form-sub">Takes 2 minutes. No commitment required.</div>
 
+  <form id="eligForm" novalidate>
     <div class="form-row">
       <div class="form-field">
         <label>First Name</label>
-        <input type="text" placeholder="Rahul">
+        <input type="text" name="firstName" placeholder="Rahul" required>
       </div>
       <div class="form-field">
         <label>Last Name</label>
-        <input type="text" placeholder="Mehta">
+        <input type="text" name="lastName" placeholder="Mehta">
       </div>
     </div>
     <div class="form-field">
       <label>Phone Number</label>
-      <input type="tel" placeholder="+91 98765 43210">
+      <input type="tel" name="phone" placeholder="+91 98765 43210" required>
     </div>
     <div class="form-field">
       <label>Total Debt Amount</label>
-      <select>
+      <select name="amount">
         <option>₹1L – ₹3L</option>
         <option>₹3L – ₹7L</option>
         <option>₹7L – ₹15L</option>
@@ -562,11 +563,13 @@
     </div>
     <div class="form-field">
       <label>Briefly describe your situation</label>
-      <textarea rows="3" placeholder="I have credit card debt across 3 banks and personal loan EMIs I can no longer afford..." style="resize:none; border:1.5px solid #e0e8e3; border-radius:8px; padding:11px 14px; font-family:'DM Sans',sans-serif; font-size:0.9rem; color:var(--ink); outline:none; background:var(--cream); width:100%; transition:border-color 0.2s;"></textarea>
+      <textarea name="situation" rows="3" placeholder="I have credit card debt across 3 banks..." style="resize:none; border:1.5px solid #e0e8e3; border-radius:8px; padding:11px 14px; font-family:'DM Sans',sans-serif; font-size:0.9rem; color:var(--ink); outline:none; background:var(--cream); width:100%; transition:border-color 0.2s;"></textarea>
     </div>
-    <button class="form-submit">Check My Eligibility →</button>
-    <div style="text-align:center; font-size:0.72rem; color:var(--mist); margin-top:12px;">🔒 Your information is 100% confidential</div>
-  </div>
+    <button class="form-submit" type="submit">Check My Eligibility →</button>
+    <div id="eligStatus" style="text-align:center; font-size:0.78rem; color:var(--green-dark); font-weight:700; min-height:18px; margin-top:8px;"></div>
+    <div style="text-align:center; font-size:0.72rem; color:var(--mist); margin-top:8px;">🔒 Your information is 100% confidential</div>
+  </form>
+</div>
 </section>
 
 <!-- TEAM -->
