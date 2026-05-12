@@ -1,3 +1,5 @@
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwBvSy-duYrDA1xjzG3dX-C6ZB6Gbz_34gsJ3cTFHfuRUDbEa7CcC1ojFfFaNaONTmb8Q/exec';
+
 // FAQ toggle
   function toggleFaq(el) {
     const item = el.parentElement;
@@ -97,7 +99,6 @@ if (heroLeadForm) {
       source:    'Hero Form'
     });
 
-    const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwBvSy-duYrDA1xjzG3dX-C6ZB6Gbz_34gsJ3cTFHfuRUDbEa7CcC1ojFfFaNaONTmb8Q/exec';
 
     try {
       await fetch(SHEET_URL, {
