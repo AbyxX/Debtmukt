@@ -536,7 +536,7 @@
   <div class="elig-form-title">Start Your Free<br>Debt Analysis</div>
   <div class="elig-form-sub">Takes 2 minutes. No commitment required.</div>
 
-  <form id="eligForm" novalidate onsubmit="handleEligSubmit(event)">
+  <form id="eligForm" novalidate>
     <div class="form-row">
       <div class="form-field">
         <label>First Name</label>
@@ -746,22 +746,5 @@
 </footer>
 
 <script src="script.js"></script>
-<script>
-function handleEligSubmit(e) {
-  e.preventDefault();
-  var form = document.getElementById('eligForm');
-  var status = document.getElementById('eligStatus');
-  var firstName = form.querySelector('[name="firstName"]').value.trim();
-  var phone = form.querySelector('[name="phone"]').value.trim();
-  if (!firstName || !phone) {
-    status.style.color = '#c0392b';
-    status.textContent = 'Please fill in your name and phone number.';
-    return;
-  }
-  status.style.color = 'var(--green-dark, #1a7a4a)';
-  status.textContent = '✓ Thanks! Our team will reach out to you shortly.';
-  form.querySelector('[type="submit"]').disabled = true;
-}
-</script>
 </body>
 </html>
