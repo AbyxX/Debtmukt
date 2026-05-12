@@ -71,20 +71,50 @@
 
   // Updated hero lead form
   const heroLeadForm = document.getElementById('heroLeadForm');
-  const heroLeadStatus = document.getElementById('heroLeadStatus');
-  if (heroLeadForm) {
-    heroLeadForm.addEventListener('submit', (event) => {
-      event.preventDefault();
-      if (!heroLeadForm.checkValidity()) {
-        heroLeadStatus.textContent = 'Please complete the required fields.';
-        heroLeadForm.reportValidity();
-        return;
-      }
-      const submitButton = heroLeadForm.querySelector('button[type="submit"]');
-      if (submitButton) submitButton.textContent = 'Review Requested';
+const heroLeadStatus = document.getElementById('heroLeadStatus');
+
+if (heroLeadForm) {
+  heroLeadForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    if (!heroLeadForm.checkValidity()) {
+      heroLeadStatus.textContent = 'Please complete the required fields.';
+      heroLeadForm.reportValidity();
+      return;
+    }
+
+    const submitButton = heroLeadForm.querySelector('button[type="submit"]');
+    submitButton.textContent = 'Submitting...';
+    submitButton.disabled = true;
+
+    const formData = {
+      name:   heroLeadForm.querySelector('[name="name"]').value,
+      phone:  heroLeadForm.querySelector('[name="phone"]').value,
+      email:  heroLeadForm.querySelector('[name="email"]').value,
+      issue:  heroLeadForm.querySelector('[name="issue"]').value,
+      amount: heroLeadForm.querySelector('[name="amount"]').value
+    };
+
+    const SHEET_URL = 'https://script.google.com/macros/library/d/1XevDlHAjSEteCZknQFohD0uHKbnRDwA_TUNIOy91-W3YFqaV9KnB4BxJ/2';  // ← replace this
+
+    try {
+      await fetch(SHEET_URL, {
+        method: 'POST',
+        mode: 'no-cors',    // required for Apps Script
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+
+      submitButton.textContent = 'Review Requested ✓';
       heroLeadStatus.textContent = 'Thank you. Our team will contact you shortly.';
-    });
-  }
+      heroLeadForm.reset();
+    } catch (err) {
+      submitButton.textContent = 'Request My Review';
+      submitButton.disabled = false;
+      heroLeadStatus.textContent = 'Something went wrong. Please try again.';
+    }
+  });
+}
 
   // FREED-inspired settlement calculator for DebtMukt
   (function initSettlementCalculator() {
