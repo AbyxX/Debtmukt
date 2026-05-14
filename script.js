@@ -23,9 +23,9 @@ const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwBvSy-duYrDA1xjzG3dX
   // Stat counter animation
   function animateCounters() {
     const nums = [
-      { el: document.querySelector('.stat-item:nth-child(1) .stat-number'), prefix: '₹', suffix: ' Cr+', end: 500 },
-      { el: document.querySelector('.stat-item:nth-child(2) .stat-number'), prefix: '', suffix: '+', end: 10000 },
-      { el: document.querySelector('.stat-item:nth-child(3) .stat-number'), prefix: '', suffix: '+', end: 15 },
+      { el: document.querySelector('.stat-item:nth-child(1) .stat-number'), prefix: '₹', suffix: ' Cr+', end: 12 },
+      { el: document.querySelector('.stat-item:nth-child(2) .stat-number'), prefix: '', suffix: '+', end: 850 },
+      { el: document.querySelector('.stat-item:nth-child(3) .stat-number'), prefix: '', suffix: '+', end: 5 },
     ];
 
     nums.forEach(({ el, prefix, suffix, end }) => {
