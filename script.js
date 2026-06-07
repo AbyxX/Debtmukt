@@ -23,7 +23,7 @@ const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwBvSy-duYrDA1xjzG3dX
   // Stat counter animation
   function animateCounters() {
     const nums = [
-      { el: document.querySelector('.stat-item:nth-child(1) .stat-number'), prefix: '₹', suffix: ' Cr+', end: 12 },
+      { el: document.querySelector('.stat-item:nth-child(1) .stat-number'), prefix: '\u20b9', suffix: ' Cr+', end: 12 },
       { el: document.querySelector('.stat-item:nth-child(2) .stat-number'), prefix: '', suffix: '+', end: 850 },
       { el: document.querySelector('.stat-item:nth-child(3) .stat-number'), prefix: '', suffix: '+', end: 5 },
     ];
@@ -57,7 +57,7 @@ const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwBvSy-duYrDA1xjzG3dX
     const raw = debtAmtEl.value.replace(/[^0-9]/g, '');
     const amt = parseInt(raw) || 500000;
     const savings = Math.round(amt * 0.65);
-    const formatted = '₹' + savings.toLocaleString('en-IN');
+    const formatted = '\u20b9' + savings.toLocaleString('en-IN');
     savingsEl.textContent = formatted;
   }
 
@@ -108,7 +108,7 @@ if (heroLeadForm) {
         body: formData.toString()
       });
 
-      submitButton.textContent = 'Review Requested ✓';
+      submitButton.textContent = 'Review Requested \u2713';
       heroLeadStatus.textContent = 'Thank you. Our team will contact you shortly.';
       heroLeadForm.reset();
     } catch (err) {
@@ -303,12 +303,12 @@ if (heroLeadForm) {
           body: formData.toString()
         });
 
-        submitBtn.textContent = 'Eligibility Checked ✓';
+        submitBtn.textContent = 'Eligibility Checked \u2713';
         eligStatus.style.color = 'var(--green-dark, #1a7a4a)';
         eligStatus.textContent = 'Thank you! Our team will reach out to you shortly.';
         eligForm.reset();
       } catch (err) {
-        submitBtn.textContent = 'Check My Eligibility →';
+        submitBtn.textContent = 'Check My Eligibility \u2192';
         submitBtn.disabled = false;
         eligStatus.style.color = '#c0392b';
         eligStatus.textContent = 'Something went wrong. Please try again.';
@@ -344,7 +344,7 @@ if (heroLeadForm) {
     });
   }, 800);
 
-// ── HINDI TRANSLATION TOGGLE ──
+// \u2500\u2500 HINDI TRANSLATION TOGGLE \u2500\u2500
 const translations = {
   en: {
     // Nav
@@ -354,14 +354,14 @@ const translations = {
     'nav-stories': 'Success Stories',
     'nav-faqs': 'FAQs',
     'nav-cta': 'Free Consultation',
-    'lang-btn': 'हिंदी',
+    'lang-btn': '\u0939\u093f\u0902\u0926\u0940',
 
     // Hero
     '.hero-badge': "India's #1 Debt Settlement Platform",
     '.hero-headline': 'Drowning<br>in debt?<br>We\'ll help you<br><span class="breathe">Breathe Again.</span>',
-    '.hero-sub': 'Our certified legal experts negotiate directly with banks and NBFCs on your behalf — so you can stop the harassment, cut your debt by up to 80%, and rebuild your life.',
+    '.hero-sub': 'Our certified legal experts negotiate directly with banks and NBFCs on your behalf \u2014 so you can stop the harassment, cut your debt by up to 80%, and rebuild your life.',
     '.trust-text': '<strong>850+ clients helped</strong>Across credit cards, personal loans & business debt',
-    '.hero-bullets': '<li>Reduce debt by 40–80%</li><li>Stop creditor harassment calls</li><li>Transparent fees — know exactly what you pay</li><li>Complete legal process within 12 months</li>',
+    '.hero-bullets': '<li>Reduce debt by 40\u201380%</li><li>Stop creditor harassment calls</li><li>Transparent fees \u2014 know exactly what you pay</li><li>Complete legal process within 12 months</li>',
 
     // Hero form
     '.calc-title': 'Free Consultation',
@@ -387,7 +387,7 @@ const translations = {
     // Trust
     '.trust .section-label': 'Why Indians Trust Us',
     '.trust .section-headline': 'We Fight for You',
-    '.trust .section-sub': 'From RBI compliance to full legal protection — every part of our service is designed around your safety and financial recovery.',
+    '.trust .section-sub': 'From RBI compliance to full legal protection \u2014 every part of our service is designed around your safety and financial recovery.',
 
     // Debt types
     '.debt-types .section-label': 'Debt Types We Handle',
@@ -401,7 +401,7 @@ const translations = {
     // Eligibility
     '.eligibility .section-label': 'Are You Eligible?',
     '.eligibility .section-headline': 'Quick Eligibility<br>Check',
-    '.eligibility .section-sub': 'Most people who qualify share these three traits. If you tick any of these boxes, we can likely help you — significantly.',
+    '.eligibility .section-sub': 'Most people who qualify share these three traits. If you tick any of these boxes, we can likely help you \u2014 significantly.',
     '.elig-form-title': 'Start Your Free<br>Debt Analysis',
     '.elig-form-sub': 'Takes 2 minutes. No commitment required.',
 
@@ -418,72 +418,72 @@ const translations = {
 
   hi: {
     // Nav
-    'nav-process': 'यह कैसे काम करता है',
-    'nav-calc': 'कैलकुलेटर',
-    'nav-debt': 'कर्ज के प्रकार',
-    'nav-stories': 'सफलता की कहानियाँ',
-    'nav-faqs': 'सामान्य प्रश्न',
-    'nav-cta': 'मुफ्त परामर्श',
+    'nav-process': '\u092f\u0939 \u0915\u0948\u0938\u0947 \u0915\u093e\u092e \u0915\u0930\u0924\u093e \u0939\u0948',
+    'nav-calc': '\u0915\u0948\u0932\u0915\u0941\u0932\u0947\u091f\u0930',
+    'nav-debt': '\u0915\u0930\u094d\u091c \u0915\u0947 \u092a\u094d\u0930\u0915\u093e\u0930',
+    'nav-stories': '\u0938\u092b\u0932\u0924\u093e \u0915\u0940 \u0915\u0939\u093e\u0928\u093f\u092f\u093e\u0901',
+    'nav-faqs': '\u0938\u093e\u092e\u093e\u0928\u094d\u092f \u092a\u094d\u0930\u0936\u094d\u0928',
+    'nav-cta': '\u092e\u0941\u092b\u094d\u0924 \u092a\u0930\u093e\u092e\u0930\u094d\u0936',
     'lang-btn': 'English',
 
     // Hero
-    '.hero-badge': 'भारत का नंबर 1 कर्ज निपटान मंच',
-    '.hero-headline': 'कर्ज में<br>डूबे हैं?<br>हम आपको<br><span class="breathe">राहत दिलाएंगे।</span>',
-    '.hero-sub': 'हमारे प्रमाणित कानूनी विशेषज्ञ सीधे बैंकों और एनबीएफसी से आपकी ओर से बात करते हैं — ताकि आप उत्पीड़न बंद कर सकें, अपना कर्ज 80% तक कम कर सकें और अपनी जिंदगी फिर से बना सकें।',
-    '.trust-text': '<strong>850+ ग्राहकों की मदद</strong>क्रेडिट कार्ड, पर्सनल लोन और बिजनेस लोन में',
-    '.hero-bullets': '<li>कर्ज 40–80% तक कम करें</li><li>वसूली एजेंट की कॉल बंद करें</li><li>पारदर्शी शुल्क — जानें कि आप क्या भुगतान करते हैं</li><li>12 महीने में पूरी कानूनी प्रक्रिया</li>',
+    '.hero-badge': '\u092d\u093e\u0930\u0924 \u0915\u093e \u0928\u0902\u092c\u0930 1 \u0915\u0930\u094d\u091c \u0928\u093f\u092a\u091f\u093e\u0928 \u092e\u0902\u091a',
+    '.hero-headline': '\u0915\u0930\u094d\u091c \u092e\u0947\u0902<br>\u0921\u0942\u092c\u0947 \u0939\u0948\u0902?<br>\u0939\u092e \u0906\u092a\u0915\u094b<br><span class="breathe">\u0930\u093e\u0939\u0924 \u0926\u093f\u0932\u093e\u090f\u0902\u0917\u0947\u0964</span>',
+    '.hero-sub': '\u0939\u092e\u093e\u0930\u0947 \u092a\u094d\u0930\u092e\u093e\u0923\u093f\u0924 \u0915\u093e\u0928\u0942\u0928\u0940 \u0935\u093f\u0936\u0947\u0937\u091c\u094d\u091e \u0938\u0940\u0927\u0947 \u092c\u0948\u0902\u0915\u094b\u0902 \u0914\u0930 \u090f\u0928\u092c\u0940\u090f\u092b\u0938\u0940 \u0938\u0947 \u0906\u092a\u0915\u0940 \u0913\u0930 \u0938\u0947 \u092c\u093e\u0924 \u0915\u0930\u0924\u0947 \u0939\u0948\u0902 \u2014 \u0924\u093e\u0915\u093f \u0906\u092a \u0909\u0924\u094d\u092a\u0940\u0921\u093c\u0928 \u092c\u0902\u0926 \u0915\u0930 \u0938\u0915\u0947\u0902, \u0905\u092a\u0928\u093e \u0915\u0930\u094d\u091c 80% \u0924\u0915 \u0915\u092e \u0915\u0930 \u0938\u0915\u0947\u0902 \u0914\u0930 \u0905\u092a\u0928\u0940 \u091c\u093f\u0902\u0926\u0917\u0940 \u092b\u093f\u0930 \u0938\u0947 \u092c\u0928\u093e \u0938\u0915\u0947\u0902\u0964',
+    '.trust-text': '<strong>850+ \u0917\u094d\u0930\u093e\u0939\u0915\u094b\u0902 \u0915\u0940 \u092e\u0926\u0926</strong>\u0915\u094d\u0930\u0947\u0921\u093f\u091f \u0915\u093e\u0930\u094d\u0921, \u092a\u0930\u094d\u0938\u0928\u0932 \u0932\u094b\u0928 \u0914\u0930 \u092c\u093f\u091c\u0928\u0947\u0938 \u0932\u094b\u0928 \u092e\u0947\u0902',
+    '.hero-bullets': '<li>\u0915\u0930\u094d\u091c 40\u201380% \u0924\u0915 \u0915\u092e \u0915\u0930\u0947\u0902</li><li>\u0935\u0938\u0942\u0932\u0940 \u090f\u091c\u0947\u0902\u091f \u0915\u0940 \u0915\u0949\u0932 \u092c\u0902\u0926 \u0915\u0930\u0947\u0902</li><li>\u092a\u093e\u0930\u0926\u0930\u094d\u0936\u0940 \u0936\u0941\u0932\u094d\u0915 \u2014 \u091c\u093e\u0928\u0947\u0902 \u0915\u093f \u0906\u092a \u0915\u094d\u092f\u093e \u092d\u0941\u0917\u0924\u093e\u0928 \u0915\u0930\u0924\u0947 \u0939\u0948\u0902</li><li>12 \u092e\u0939\u0940\u0928\u0947 \u092e\u0947\u0902 \u092a\u0942\u0930\u0940 \u0915\u093e\u0928\u0942\u0928\u0940 \u092a\u094d\u0930\u0915\u094d\u0930\u093f\u092f\u093e</li>',
 
     // Hero form
-    '.calc-title': 'मुफ्त परामर्श',
-    '.calc-headline': 'आज जानें आप क्या कर सकते हैं',
-    '.hero-form-intro': 'कुछ बुनियादी जानकारी साझा करें। हमारी टीम आपको लोन समाधान या वसूली उत्पीड़न के लिए अगला सुरक्षित कदम समझने में मदद करेगी।',
+    '.calc-title': '\u092e\u0941\u092b\u094d\u0924 \u092a\u0930\u093e\u092e\u0930\u094d\u0936',
+    '.calc-headline': '\u0906\u091c \u091c\u093e\u0928\u0947\u0902 \u0906\u092a \u0915\u094d\u092f\u093e \u0915\u0930 \u0938\u0915\u0924\u0947 \u0939\u0948\u0902',
+    '.hero-form-intro': '\u0915\u0941\u091b \u092c\u0941\u0928\u093f\u092f\u093e\u0926\u0940 \u091c\u093e\u0928\u0915\u093e\u0930\u0940 \u0938\u093e\u091d\u093e \u0915\u0930\u0947\u0902\u0964 \u0939\u092e\u093e\u0930\u0940 \u091f\u0940\u092e \u0906\u092a\u0915\u094b \u0932\u094b\u0928 \u0938\u092e\u093e\u0927\u093e\u0928 \u092f\u093e \u0935\u0938\u0942\u0932\u0940 \u0909\u0924\u094d\u092a\u0940\u0921\u093c\u0928 \u0915\u0947 \u0932\u093f\u090f \u0905\u0917\u0932\u093e \u0938\u0941\u0930\u0915\u094d\u0937\u093f\u0924 \u0915\u0926\u092e \u0938\u092e\u091d\u0928\u0947 \u092e\u0947\u0902 \u092e\u0926\u0926 \u0915\u0930\u0947\u0917\u0940\u0964',
 
     // Stats
-    '.stat-item:nth-child(1) .stat-label': 'कुल कर्ज निपटान',
-    '.stat-item:nth-child(2) .stat-label': 'खुश ग्राहक',
-    '.stat-item:nth-child(3) .stat-label': 'वर्षों का अनुभव',
-    '.stat-item:nth-child(4) .stat-label': 'गूगल रेटिंग',
+    '.stat-item:nth-child(1) .stat-label': '\u0915\u0941\u0932 \u0915\u0930\u094d\u091c \u0928\u093f\u092a\u091f\u093e\u0928',
+    '.stat-item:nth-child(2) .stat-label': '\u0916\u0941\u0936 \u0917\u094d\u0930\u093e\u0939\u0915',
+    '.stat-item:nth-child(3) .stat-label': '\u0935\u0930\u094d\u0937\u094b\u0902 \u0915\u093e \u0905\u0928\u0941\u092d\u0935',
+    '.stat-item:nth-child(4) .stat-label': '\u0917\u0942\u0917\u0932 \u0930\u0947\u091f\u093f\u0902\u0917',
 
     // Roadmap
-    '.roadmap .section-label': 'प्रक्रिया',
-    '.roadmap .section-headline': 'कर्ज मुक्ति का रोडमैप',
-    '.roadmap .section-sub': 'वसूली दबाव से लेकर दस्तावेज़ी समाधान योजना तक — एक शांत और व्यवस्थित रास्ता।',
+    '.roadmap .section-label': '\u092a\u094d\u0930\u0915\u094d\u0930\u093f\u092f\u093e',
+    '.roadmap .section-headline': '\u0915\u0930\u094d\u091c \u092e\u0941\u0915\u094d\u0924\u093f \u0915\u093e \u0930\u094b\u0921\u092e\u0948\u092a',
+    '.roadmap .section-sub': '\u0935\u0938\u0942\u0932\u0940 \u0926\u092c\u093e\u0935 \u0938\u0947 \u0932\u0947\u0915\u0930 \u0926\u0938\u094d\u0924\u093e\u0935\u0947\u091c\u093c\u0940 \u0938\u092e\u093e\u0927\u093e\u0928 \u092f\u094b\u091c\u0928\u093e \u0924\u0915 \u2014 \u090f\u0915 \u0936\u093e\u0902\u0924 \u0914\u0930 \u0935\u094d\u092f\u0935\u0938\u094d\u0925\u093f\u0924 \u0930\u093e\u0938\u094d\u0924\u093e\u0964',
 
     // Harassment
-    '.harassment-section .section-label': 'वसूली उत्पीड़न सहायता',
-    '.harassment-section .section-headline': 'धमकी भरी कॉल अकेले मत झेलें।',
-    '.harassment-section .section-sub': 'हमारी टीम आपको तथ्य दर्ज करने, सही चैनलों के माध्यम से जवाब देने और ऋणदाता की बातचीत को एक दस्तावेज़ी प्रक्रिया में लाने में मदद करती है।',
+    '.harassment-section .section-label': '\u0935\u0938\u0942\u0932\u0940 \u0909\u0924\u094d\u092a\u0940\u0921\u093c\u0928 \u0938\u0939\u093e\u092f\u0924\u093e',
+    '.harassment-section .section-headline': '\u0927\u092e\u0915\u0940 \u092d\u0930\u0940 \u0915\u0949\u0932 \u0905\u0915\u0947\u0932\u0947 \u092e\u0924 \u091d\u0947\u0932\u0947\u0902\u0964',
+    '.harassment-section .section-sub': '\u0939\u092e\u093e\u0930\u0940 \u091f\u0940\u092e \u0906\u092a\u0915\u094b \u0924\u0925\u094d\u092f \u0926\u0930\u094d\u091c \u0915\u0930\u0928\u0947, \u0938\u0939\u0940 \u091a\u0948\u0928\u0932\u094b\u0902 \u0915\u0947 \u092e\u093e\u0927\u094d\u092f\u092e \u0938\u0947 \u091c\u0935\u093e\u092c \u0926\u0947\u0928\u0947 \u0914\u0930 \u090b\u0923\u0926\u093e\u0924\u093e \u0915\u0940 \u092c\u093e\u0924\u091a\u0940\u0924 \u0915\u094b \u090f\u0915 \u0926\u0938\u094d\u0924\u093e\u0935\u0947\u091c\u093c\u0940 \u092a\u094d\u0930\u0915\u094d\u0930\u093f\u092f\u093e \u092e\u0947\u0902 \u0932\u093e\u0928\u0947 \u092e\u0947\u0902 \u092e\u0926\u0926 \u0915\u0930\u0924\u0940 \u0939\u0948\u0964',
 
     // Trust
-    '.trust .section-label': 'हम पर भरोसा क्यों?',
-    '.trust .section-headline': 'हम आपके लिए लड़ते हैं',
-    '.trust .section-sub': 'आरबीआई अनुपालन से लेकर पूर्ण कानूनी सुरक्षा तक — हमारी सेवा का हर हिस्सा आपकी सुरक्षा और वित्तीय पुनर्प्राप्ति के लिए बना है।',
+    '.trust .section-label': '\u0939\u092e \u092a\u0930 \u092d\u0930\u094b\u0938\u093e \u0915\u094d\u092f\u094b\u0902?',
+    '.trust .section-headline': '\u0939\u092e \u0906\u092a\u0915\u0947 \u0932\u093f\u090f \u0932\u0921\u093c\u0924\u0947 \u0939\u0948\u0902',
+    '.trust .section-sub': '\u0906\u0930\u092c\u0940\u0906\u0908 \u0905\u0928\u0941\u092a\u093e\u0932\u0928 \u0938\u0947 \u0932\u0947\u0915\u0930 \u092a\u0942\u0930\u094d\u0923 \u0915\u093e\u0928\u0942\u0928\u0940 \u0938\u0941\u0930\u0915\u094d\u0937\u093e \u0924\u0915 \u2014 \u0939\u092e\u093e\u0930\u0940 \u0938\u0947\u0935\u093e \u0915\u093e \u0939\u0930 \u0939\u093f\u0938\u094d\u0938\u093e \u0906\u092a\u0915\u0940 \u0938\u0941\u0930\u0915\u094d\u0937\u093e \u0914\u0930 \u0935\u093f\u0924\u094d\u0924\u0940\u092f \u092a\u0941\u0928\u0930\u094d\u092a\u094d\u0930\u093e\u092a\u094d\u0924\u093f \u0915\u0947 \u0932\u093f\u090f \u092c\u0928\u093e \u0939\u0948\u0964',
 
     // Debt types
-    '.debt-types .section-label': 'हम जिन कर्जों में मदद करते हैं',
-    '.debt-types .section-headline': 'असुरक्षित लोन के तनाव में सहायता',
-    '.debt-types .section-sub': 'EMI दबाव, वसूली कॉल, बकाया खाते या निपटान — हर मामले में साफ, केस-दर-केस सहायता।',
+    '.debt-types .section-label': '\u0939\u092e \u091c\u093f\u0928 \u0915\u0930\u094d\u091c\u094b\u0902 \u092e\u0947\u0902 \u092e\u0926\u0926 \u0915\u0930\u0924\u0947 \u0939\u0948\u0902',
+    '.debt-types .section-headline': '\u0905\u0938\u0941\u0930\u0915\u094d\u0937\u093f\u0924 \u0932\u094b\u0928 \u0915\u0947 \u0924\u0928\u093e\u0935 \u092e\u0947\u0902 \u0938\u0939\u093e\u092f\u0924\u093e',
+    '.debt-types .section-sub': 'EMI \u0926\u092c\u093e\u0935, \u0935\u0938\u0942\u0932\u0940 \u0915\u0949\u0932, \u092c\u0915\u093e\u092f\u093e \u0916\u093e\u0924\u0947 \u092f\u093e \u0928\u093f\u092a\u091f\u093e\u0928 \u2014 \u0939\u0930 \u092e\u093e\u092e\u0932\u0947 \u092e\u0947\u0902 \u0938\u093e\u092b, \u0915\u0947\u0938-\u0926\u0930-\u0915\u0947\u0938 \u0938\u0939\u093e\u092f\u0924\u093e\u0964',
 
     // Testimonials
-    '.testimonials .section-label': 'असली कहानियाँ',
-    '.testimonials .section-headline': 'असली परिणाम, असली लोग',
+    '.testimonials .section-label': '\u0905\u0938\u0932\u0940 \u0915\u0939\u093e\u0928\u093f\u092f\u093e\u0901',
+    '.testimonials .section-headline': '\u0905\u0938\u0932\u0940 \u092a\u0930\u093f\u0923\u093e\u092e, \u0905\u0938\u0932\u0940 \u0932\u094b\u0917',
 
     // Eligibility
-    '.eligibility .section-label': 'क्या आप पात्र हैं?',
-    '.eligibility .section-headline': 'त्वरित पात्रता<br>जाँच',
-    '.eligibility .section-sub': 'पात्र लोगों में ये तीन बातें आम हैं। अगर इनमें से कोई भी आप पर लागू होती है, तो हम शायद आपकी काफी मदद कर सकते हैं।',
-    '.elig-form-title': 'अपना मुफ्त<br>कर्ज विश्लेषण शुरू करें',
-    '.elig-form-sub': '2 मिनट लगते हैं। कोई प्रतिबद्धता नहीं।',
+    '.eligibility .section-label': '\u0915\u094d\u092f\u093e \u0906\u092a \u092a\u093e\u0924\u094d\u0930 \u0939\u0948\u0902?',
+    '.eligibility .section-headline': '\u0924\u094d\u0935\u0930\u093f\u0924 \u092a\u093e\u0924\u094d\u0930\u0924\u093e<br>\u091c\u093e\u0901\u091a',
+    '.eligibility .section-sub': '\u092a\u093e\u0924\u094d\u0930 \u0932\u094b\u0917\u094b\u0902 \u092e\u0947\u0902 \u092f\u0947 \u0924\u0940\u0928 \u092c\u093e\u0924\u0947\u0902 \u0906\u092e \u0939\u0948\u0902\u0964 \u0905\u0917\u0930 \u0907\u0928\u092e\u0947\u0902 \u0938\u0947 \u0915\u094b\u0908 \u092d\u0940 \u0906\u092a \u092a\u0930 \u0932\u093e\u0917\u0942 \u0939\u094b\u0924\u0940 \u0939\u0948, \u0924\u094b \u0939\u092e \u0936\u093e\u092f\u0926 \u0906\u092a\u0915\u0940 \u0915\u093e\u092b\u0940 \u092e\u0926\u0926 \u0915\u0930 \u0938\u0915\u0924\u0947 \u0939\u0948\u0902\u0964',
+    '.elig-form-title': '\u0905\u092a\u0928\u093e \u092e\u0941\u092b\u094d\u0924<br>\u0915\u0930\u094d\u091c \u0935\u093f\u0936\u094d\u0932\u0947\u0937\u0923 \u0936\u0941\u0930\u0942 \u0915\u0930\u0947\u0902',
+    '.elig-form-sub': '2 \u092e\u093f\u0928\u091f \u0932\u0917\u0924\u0947 \u0939\u0948\u0902\u0964 \u0915\u094b\u0908 \u092a\u094d\u0930\u0924\u093f\u092c\u0926\u094d\u0927\u0924\u093e \u0928\u0939\u0940\u0902\u0964',
 
     // FAQ
-    '.faq .section-label': 'सवाल हैं?',
-    '.faq .section-headline': 'अक्सर पूछे जाने वाले<br>सवाल',
-    '.faq .section-sub': 'वित्तीय स्वतंत्रता की ओर पहला कदम उठाने से पहले जो कुछ जानना ज़रूरी है।',
+    '.faq .section-label': '\u0938\u0935\u093e\u0932 \u0939\u0948\u0902?',
+    '.faq .section-headline': '\u0905\u0915\u094d\u0938\u0930 \u092a\u0942\u091b\u0947 \u091c\u093e\u0928\u0947 \u0935\u093e\u0932\u0947<br>\u0938\u0935\u093e\u0932',
+    '.faq .section-sub': '\u0935\u093f\u0924\u094d\u0924\u0940\u092f \u0938\u094d\u0935\u0924\u0902\u0924\u094d\u0930\u0924\u093e \u0915\u0940 \u0913\u0930 \u092a\u0939\u0932\u093e \u0915\u0926\u092e \u0909\u0920\u093e\u0928\u0947 \u0938\u0947 \u092a\u0939\u0932\u0947 \u091c\u094b \u0915\u0941\u091b \u091c\u093e\u0928\u0928\u093e \u091c\u093c\u0930\u0942\u0930\u0940 \u0939\u0948\u0964',
 
     // CTA Banner
-    '.cta-banner .section-label': 'पहला कदम उठाएं',
-    '.cta-banner-headline': 'आपकी वित्तीय स्वतंत्रता<br>आज से शुरू होती है',
-    '.cta-banner-sub': 'स्थिति बिगड़ने का इंतज़ार मत करें। आज मुफ्त विश्लेषण पाएं जो आपके लाखों और सालों का तनाव बचा सकता है।',
+    '.cta-banner .section-label': '\u092a\u0939\u0932\u093e \u0915\u0926\u092e \u0909\u0920\u093e\u090f\u0902',
+    '.cta-banner-headline': '\u0906\u092a\u0915\u0940 \u0935\u093f\u0924\u094d\u0924\u0940\u092f \u0938\u094d\u0935\u0924\u0902\u0924\u094d\u0930\u0924\u093e<br>\u0906\u091c \u0938\u0947 \u0936\u0941\u0930\u0942 \u0939\u094b\u0924\u0940 \u0939\u0948',
+    '.cta-banner-sub': '\u0938\u094d\u0925\u093f\u0924\u093f \u092c\u093f\u0917\u0921\u093c\u0928\u0947 \u0915\u093e \u0907\u0902\u0924\u091c\u093c\u093e\u0930 \u092e\u0924 \u0915\u0930\u0947\u0902\u0964 \u0906\u091c \u092e\u0941\u092b\u094d\u0924 \u0935\u093f\u0936\u094d\u0932\u0947\u0937\u0923 \u092a\u093e\u090f\u0902 \u091c\u094b \u0906\u092a\u0915\u0947 \u0932\u093e\u0916\u094b\u0902 \u0914\u0930 \u0938\u093e\u0932\u094b\u0902 \u0915\u093e \u0924\u0928\u093e\u0935 \u092c\u091a\u093e \u0938\u0915\u0924\u093e \u0939\u0948\u0964',
   }
 };
 
@@ -512,7 +512,7 @@ const translations = {
     });
 
     // Toggle button label
-    btn.textContent = l === 'hi' ? 'English' : 'हिंदी';
+    btn.textContent = l === 'hi' ? 'English' : '\u0939\u093f\u0902\u0926\u0940';
     document.documentElement.lang = l === 'hi' ? 'hi' : 'en';
   }
 
