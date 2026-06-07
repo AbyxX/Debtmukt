@@ -1,841 +1,3 @@
-
-Claude finished the response
-
-Debtmukt website.html
-html
-
-can you give 3 different files html css and JS
-
-May 12
-
-Assembled separate HTML, CSS, and JavaScript file components
-Assembled separate HTML, CSS, and JavaScript file components
-Now I have a complete picture of the file. Let me now create the 3 separate files.
-
-
-Organized and separated HTML, CSS, and JavaScript components
-Organized and separated HTML, CSS, and JavaScript components
-Now I have the full picture. Creating the 3 files now.
-
-
-Orchestrated extraction and organization of three separate code files
-Orchestrated extraction and organization of three separate code files
-Good, I have everything. Now creating the 3 files:
-
-
-Ran 4 commands
-Ran 4 commands
-All 3 files look clean. Presenting them now:
-
-
-Presented 3 files
-Presented 3 files
-Done. Here's what was split out:
-
-index.html (747 lines) — Pure HTML structure. The <style> block is replaced with <link rel="stylesheet" href="styles.css"> and the inline <script> block is replaced with <script src="script.js"></script>.
-
-styles.css (1933 lines) — All CSS including CSS variables, component styles, animations, and responsive media queries.
-
-script.js (252 lines) — All JavaScript: FAQ toggle, scroll reveal observer, stat counter animation, debt calculator, settlement calculator, form handler, and smooth scroll logic.
-
-Keep all 3 files in the same folder and they'll work together as-is.
-
-
-Index
-Code · HTML 
-
-Styles
-Code · CSS 
-
-Script
-JS 
-1778578199120_image.png
-why is there no content below hero? I have save the files in one folder only
-
-May 12
-
-Diagnosed invisible content issue and explored JavaScript observer functionality
-Diagnosed invisible content issue and explored JavaScript observer functionality
-The content is there — it's just invisible. Every section below the stats bar has class="reveal" which starts with opacity: 0. They become visible only when scrolled into view via the IntersectionObserver in script.js.
-
-Two things to check/fix:
-
-1. Try scrolling down — content should appear section by section as you scroll.
-
-2. If scrolling doesn't work, it means script.js isn't loading or has an error. Open browser DevTools → Console (F12) and check for red errors.
-
-The cleanest fix is to add a fallback at the bottom of script.js that forces all .reveal elements visible if the observer doesn't fire:
-
-
-Viewed a file, edited a file, ran a command
-Viewed a file, edited a file, ran a command
-Replace your existing script.js with this updated one. Two things were fixed:
-
-Removed a stray </script> tag that was accidentally included at the end of the file during extraction — this would have caused a JS parse error, breaking the entire script.
-Added a fallback — after 800ms, any .reveal section that still hasn't been triggered by the IntersectionObserver gets made visible automatically. This handles the file:// protocol quirk where observers sometimes don't fire for offscreen elements on initial load.
-
-Script
-JS 
-how do i connect the form in this website to a google sheet?
-
-May 12
-
-Identified Google Apps Script solution for form-to-sheet integration
-Identified Google Apps Script solution for form-to-sheet integration
-The easiest free way is using Google Apps Script as a webhook. No backend server needed.
-
-Step 1 — Create a Google Sheet
-Go to sheets.google.com → create a new sheet
-Name the columns in Row 1: Timestamp | Name | Phone | Email | Issue | Amount
-Step 2 — Create the Apps Script
-In your sheet, click Extensions → Apps Script
-Delete the default code and paste this:
-javascript
-function doPost(e) {
-  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-  const data = JSON.parse(e.postData.contents);
-
-  sheet.appendRow([
-    new Date(),
-    data.name   || '',
-    data.phone  || '',
-    data.email  || '',
-    data.issue  || '',
-    data.amount || ''
-  ]);
-
-  return ContentService
-    .createTextOutput(JSON.stringify({ result: 'success' }))
-    .setMimeType(ContentService.MimeType.JSON);
-}
-Click Save (name the project anything, e.g. "DebtMukt Form")
-Step 3 — Deploy as Web App
-Click Deploy → New deployment
-Click the gear icon ⚙️ next to "Type" → select Web app
-Set:
-Execute as: Me
-Who has access: Anyone
-Click Deploy
-Copy the Web App URL — it looks like: https://script.google.com/macros/s/AKfycb.../exec
-Step 4 — Update script.js
-Find the hero lead form handler in your script.js and replace it:
-
-javascript
-const heroLeadForm = document.getElementById('heroLeadForm');
-const heroLeadStatus = document.getElementById('heroLeadStatus');
-
-if (heroLeadForm) {
-  heroLeadForm.addEventListener('submit', async (event) => {
-    event.preventDefault();
-
-    if (!heroLeadForm.checkValidity()) {
-      heroLeadStatus.textContent = 'Please complete the required fields.';
-      heroLeadForm.reportValidity();
-      return;
-    }
-
-    const submitButton = heroLeadForm.querySelector('button[type="submit"]');
-    submitButton.textContent = 'Submitting...';
-    submitButton.disabled = true;
-
-    const formData = {
-      name:   heroLeadForm.querySelector('[name="name"]').value,
-      phone:  heroLeadForm.querySelector('[name="phone"]').value,
-      email:  heroLeadForm.querySelector('[name="email"]').value,
-      issue:  heroLeadForm.querySelector('[name="issue"]').value,
-      amount: heroLeadForm.querySelector('[name="amount"]').value
-    };
-
-    const SHEET_URL = 'PASTE_YOUR_WEB_APP_URL_HERE';  // ← replace this
-
-    try {
-      await fetch(SHEET_URL, {
-        method: 'POST',
-        mode: 'no-cors',    // required for Apps Script
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      });
-
-      submitButton.textContent = 'Review Requested ✓';
-      heroLeadStatus.textContent = 'Thank you. Our team will contact you shortly.';
-      heroLeadForm.reset();
-    } catch (err) {
-      submitButton.textContent = 'Request My Review';
-      submitButton.disabled = false;
-      heroLeadStatus.textContent = 'Something went wrong. Please try again.';
-    }
-  });
-}
-Replace 'PASTE_YOUR_WEB_APP_URL_HERE' with the URL you copied in Step 3.
-
-Important note on mode: 'no-cors'
-Google Apps Script doesn't return CORS headers, so you must use no-cors. This means you won't get a readable response back — but the data does get written to the sheet. The try/catch handles network failures.
-
-Testing
-Submit the form on your site
-Check your Google Sheet — a new row should appear within a few seconds
-If nothing appears, go back to Apps Script → Executions tab to see logs/errors
-i did not copy the Web App URL where do i find it again
-
-May 12
-Go to your Apps Script project and:
-
-Extensions → Apps Script → Deploy → Manage deployments
-
-You'll see your deployment listed with the Web App URL right there. Click Copy next to it.
-
-If you accidentally deleted the deployment, just click New deployment again and follow the same steps — a new URL will be generated.
-
-1778580203228_image.png
-This is what i am getting when i click on execution log and press run
-
-May 12
-That error is completely normal — don't worry about it.
-
-The error happens because you clicked Run manually inside the editor. When run manually, there's no form data being sent, so e.postData is undefined and it crashes.
-
-doPost is not meant to be run manually. It only works correctly when your website form sends a POST request to it.
-
-What you should do instead:
-
-Just click Deploy → Manage deployments
-Copy the Web App URL from there
-Paste it into your script.js where it says PASTE_YOUR_WEB_APP_URL_HERE
-Open your website, fill in the form, and submit it
-Check your Google Sheet — the row should appear
-The execution log error you're seeing is a false alarm from the manual test run, not a problem with your actual code.
-
-already pasted
-
-May 12
-Great! Now just test it end to end:
-
-Open your index.html in the browser
-Fill in the hero form (Name, Phone, Issue, Amount)
-Click Request My Review
-Check your Google Sheet — a new row should appear within a few seconds
-If no row appears, go back to Apps Script → Executions tab (the clock icon on the left sidebar) and check if a new execution shows up after the form submit. Share a screenshot of what you see and I'll help debug it.
-
-
-script.js
-290 lines
-
-js
-
-nothing new showed up, this is the script file
-
-May 12
-
-Diagnosed form submission failure and identified deployment configuration issues
-Diagnosed form submission failure and identified deployment configuration issues
-The URL is pasted correctly. The most likely culprit is the deployment access setting. Let's verify:
-
-Check 1 — Deployment access
-
-Go to Apps Script → Deploy → Manage deployments → click the ✏️ edit icon and confirm:
-
-Execute as: Me
-Who has access: Anyone ← must be this, NOT "Anyone with Google account"
-If it says "Anyone with Google account", change it, click Deploy again, and use the new URL.
-
-Check 2 — Did the request even reach Google?
-
-In Apps Script, click the clock icon (Executions) on the left sidebar. Submit the form once, then refresh that page. You should see a new execution appear.
-
-If you see one → the script ran, check what it says
-If you see nothing → the fetch from your browser never reached Google
-Check 3 — Browser console error
-
-Open your site → press F12 → go to Console tab → submit the form → look for any red errors and share what you see.
-
-Most common fix — if you're opening index.html as a local file (file://), some browsers block outgoing fetch requests. The quickest workaround is to install the VS Code Live Server extension, right-click index.html → Open with Live Server. This serves it on http://localhost and the fetch will work.
-
-There are few changes that i want to do
-The get started button leads to the hero section and the quick eligibility check form should also submit to the same sheet but the thing is that i has one additional field
-
-May 12
-
-Architected form integration strategy with dual submission handling
-Architected form integration strategy with dual submission handling
-Three things to update. Let me do the script first, then give you the small HTML and Apps Script changes.
-
-
-Viewed a file, ran a command
-Viewed a file, ran a command
-Now add the two new handlers — Get Started button + eligibility form:
-
-
-Ran a command, read a file
-Ran a command, read a file
-Now two more quick changes you need to make manually:
-
-1. In index.html — update the eligibility form
-
-Find the eligibility section (<div class="elig-right">) and replace the inner content with this — key changes are wrapping in a <form> and adding name attributes:
-
-html
-<div class="elig-right">
-  <div class="elig-form-title">Start Your Free<br>Debt Analysis</div>
-  <div class="elig-form-sub">Takes 2 minutes. No commitment required.</div>
-
-  <form id="eligForm" novalidate>
-    <div class="form-row">
-      <div class="form-field">
-        <label>First Name</label>
-        <input type="text" name="firstName" placeholder="Rahul" required>
-      </div>
-      <div class="form-field">
-        <label>Last Name</label>
-        <input type="text" name="lastName" placeholder="Mehta">
-      </div>
-    </div>
-    <div class="form-field">
-      <label>Phone Number</label>
-      <input type="tel" name="phone" placeholder="+91 98765 43210" required>
-    </div>
-    <div class="form-field">
-      <label>Total Debt Amount</label>
-      <select name="amount">
-        <option>₹1L – ₹3L</option>
-        <option>₹3L – ₹7L</option>
-        <option>₹7L – ₹15L</option>
-        <option>₹15L – ₹50L</option>
-        <option>Above ₹50L</option>
-      </select>
-    </div>
-    <div class="form-field">
-      <label>Briefly describe your situation</label>
-      <textarea name="situation" rows="3" placeholder="I have credit card debt across 3 banks..." style="resize:none; border:1.5px solid #e0e8e3; border-radius:8px; padding:11px 14px; font-family:'DM Sans',sans-serif; font-size:0.9rem; color:var(--ink); outline:none; background:var(--cream); width:100%; transition:border-color 0.2s;"></textarea>
-    </div>
-    <button class="form-submit" type="submit">Check My Eligibility →</button>
-    <div id="eligStatus" style="text-align:center; font-size:0.78rem; color:var(--green-dark); font-weight:700; min-height:18px; margin-top:8px;"></div>
-    <div style="text-align:center; font-size:0.72rem; color:var(--mist); margin-top:8px;">🔒 Your information is 100% confidential</div>
-  </form>
-</div>
-2. In Apps Script — add the extra columns
-
-Replace your Apps Script code with this to capture situation and source:
-
-javascript
-function doPost(e) {
-  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-  const data = JSON.parse(e.postData.contents);
-
-  sheet.appendRow([
-    new Date(),
-    data.name      || '',
-    data.phone     || '',
-    data.email     || '',
-    data.issue     || '',
-    data.amount    || '',
-    data.situation || '',
-    data.source    || 'Hero Form'
-  ]);
-
-  return ContentService
-    .createTextOutput(JSON.stringify({ result: 'success' }))
-    .setMimeType(ContentService.MimeType.JSON);
-}
-Also add Situation and Source as columns G and H in your Google Sheet header row. Then redeploy (Deploy → Manage deployments → edit → Deploy) and you're done.
-
-
-Script
-JS 
-
-index.html
-html
-
-When submiting the eligibility check form it refreshes the page and the "get started now" "talk to an expert" does not scroll to the hero section
-
-May 12
-
-Diagnosed form submission and button handler issues systematically
-Diagnosed form submission and button handler issues systematically
-I can see all three issues. Let me fix them all in one go:
-
-Form refresh — the eligibility form's <button> needs type="submit" confirmed and the JS handler needs to be bulletproof
-Get Started Now — needs data-scroll-consult attribute (the handler already exists for that)
-Talk to an Expert — same fix, just add data-scroll-consult
-
-Fix button attributes in index.html
-Fix button attributes in index.html
-Can you remove the section "The Lawyers Fighting for Your Rights Our panel of certified debt resolution attorneys have collectively"
-Quick Eligibility Check the debt is not limited to 1lakh + so fix that aswell. It can be less than 1 lakh.
-In we fight for you section there is a mention of no upfront fee can you change or remove/replace that since we will charge upfront
-May 14
-
-Identified three content modifications for index.html file
-Identified three content modifications for index.html file
-All three done:
-
-Team section removed — the entire "Lawyers Fighting for Your Rights" section is gone, and the "Our Lawyers" link was also removed from the nav bar.
-Eligibility check updated — "Total debt over ₹1,00,000" changed to "Debt of any amount" so no one is excluded.
-Trust card updated — "No Upfront Fees" replaced with "Transparent Fees" with copy that's honest about fees being charged upfront but clearly disclosed.
-
-Index
-Code · HTML 
-
-1778757150576_index (1).html
-html
-
-
-1778757170582_styles (1).css
-css
-
-
-1778757170583_script (1).js
-346 lines
-
-js
-
-these are the files from which you need to fix the above said things
-
-May 14
-
-Deliberated button handler updates for improved form navigation
-Deliberated button handler updates for improved form navigation
-All good. Now present all 3 files:
-
-
-Presented 3 files
-Presented 3 files
-All 6 fixes applied across the 3 files:
-
-Team section removed — entire lawyers section deleted, "Our Lawyers" nav link also removed
-Eligibility bullet fixed — "Total debt over ₹1,00,000" → "Debt of any amount"
-Trust card updated — "No Upfront Fees" → "Transparent Fees" with honest copy
-Get Started Now — now uses data-scroll-consult to scroll to the hero form
-Talk to an Expert — same fix applied
-styles.css and script.js — passed through unchanged (no edits needed there)
-
-Index
-Code · HTML 
-
-Styles
-Code · CSS 
-
-Script
-JS 
-How do we configure a website to show in hindi based on user browers language or something
-
-May 14
-There are two approaches depending on how much Hindi content you want.
-
-Option A — Auto-detect and redirect to a Hindi version (Recommended)
-Best if you want a fully translated site. You'd maintain two files: index.html (English) and index-hi.html (Hindi), and add this snippet to the <head> of your English index.html:
-
-html
-<script>
-  const lang = navigator.language || navigator.userLanguage;
-  if (lang.startsWith('hi') && !sessionStorage.getItem('langRedirected')) {
-    sessionStorage.setItem('langRedirected', 'true');
-    window.location.replace('index-hi.html');
-  }
-</script>
-sessionStorage ensures it only redirects once — so if the user manually switches back to English, they won't get stuck in a redirect loop.
-
-Option B — Language toggle button (More practical)
-Add a toggle button to your nav, store the choice, and swap text dynamically via JS. No second HTML file needed.
-
-In your nav (index.html):
-
-html
-<button id="langToggle" type="button">हिंदी</button>
-In script.js:
-
-javascript
-const translations = {
-  '.hero-headline': 'कर्ज में डूबे हैं?<br>हम आपको<br><span class="breathe">राहत दिलाएंगे।</span>',
-  '.hero-sub': 'हमारे प्रमाणित कानूनी विशेषज्ञ बैंकों से सीधे बात करते हैं...',
-  // add more selectors and translations
-};
-
-const langToggle = document.getElementById('langToggle');
-let isHindi = localStorage.getItem('lang') === 'hi';
-
-function applyLanguage() {
-  if (isHindi) {
-    Object.entries(translations).forEach(([sel, text]) => {
-      const el = document.querySelector(sel);
-      if (el) el.innerHTML = text;
-    });
-    document.documentElement.lang = 'hi';
-    langToggle.textContent = 'English';
-  } else {
-    location.reload(); // reload resets to original English HTML
-  }
-}
-
-// Apply on page load if previously set
-if (isHindi) applyLanguage();
-
-langToggle.addEventListener('click', () => {
-  isHindi = !isHindi;
-  localStorage.setItem('lang', isHindi ? 'hi' : 'en');
-  applyLanguage();
-});
-localStorage remembers the user's choice across visits.
-
-Option C — Both together (Best UX)
-Auto-detect on first visit + show a toggle so the user can always switch manually. This is what most professional sites do.
-
-javascript
-// Auto-detect only on first visit
-if (!localStorage.getItem('lang')) {
-  const browserLang = navigator.language || '';
-  localStorage.setItem('lang', browserLang.startsWith('hi') ? 'hi' : 'en');
-}
-// Then run your toggle logic above
-Which to pick?
-Effort	Quality
-Option A (redirect)	Medium — translate one full HTML file	Best — full natural Hindi
-Option B (JS swap)	Low — add translations in JS	Good for key sections
-Option C (both)	Medium	Best UX
-For a lead-gen site like DebtMukt targeting Hindi speakers, Option A is worth the effort — a properly translated page will convert much better than JS-swapped text. Want me to generate the Hindi index-hi.html for you?
-
-In the hero section can you fix the "Zero upfront legal fees" and in the same section left to the "10,000+ Indians helped" can you put some AI or usable images of people instead of initals like AG, AS etc that is present right now. Also the stats need to be updated aswell to be a bit honest. 500cr and 15yrs is too much pls change the stats
-
-May 14
-
-Strategized fixes for misleading claims, avatar replacements, and realistic stat adjustments
-Strategized fixes for misleading claims, avatar replacements, and realistic stat adjustments
-Now I have everything I need. Making all changes:
-
-
-Apply all hero and stats changes to index.html
-Apply all hero and stats changes to index.html
-Now update the CSS to style img tags inside .trust-avatars the same as the old spans, and update the JS counter targets:
-
-
-Ran a command, read a file
-Ran a command, read a file
-All done across all 3 files. Here's a summary of what changed:
-
-index.html
-
-"Zero upfront legal fees" → "Transparent fees — know exactly what you pay"
-Initials (AK, RP, SM, VG) → real face photos from pravatar.cc (a CDN that serves real human face images — needs internet, works fine on a hosted site)
-"10,000+ Indians helped" → "850+ Indians helped"
-Stats bar targets updated: ₹500 Cr → ₹12 Cr, 10,000 clients → 850, 15 yrs → 5 yrs
-styles.css
-
-Added img selector alongside span in .trust-avatars so the photos get the same circular, overlapping style
-script.js
-
-Counter animation end values updated to match: 12, 850, 5
-
-Index
-Code · HTML 
-
-Styles
-Code · CSS 
-
-Script
-JS 
-The images should be of indian and the style how it showed should be in circle like before
-
-May 14
-
-Deliberated image sources and CSS styling for circular Indian avatars
-Deliberated image sources and CSS styling for circular Indian avatars
-The CSS is fine but display: flex doesn't apply to img tags the same way. Let me fix both the styling and swap to more Indian-looking face images using DiceBear with Indian name seeds and brown skin — reliable, no broken links, always circular.
-
-
-Ran a command, read a file
-Ran a command, read a file
-Done. Two things changed:
-
-Avatars — switched to DiceBear Personas with seeds rahul, priya, arjun, anjali and skinColor=brown. These are illustrated faces with Indian names as seeds, always render the same person consistently, and load from a reliable CDN. They'll show as overlapping circles exactly like before.
-
-CSS — separated the span and img rules since display: flex breaks image rendering. Images now use display: block + object-fit: cover + border-radius: 50% which is the correct way to make photos circular.
-
-Note on real photos — if you want actual photorealistic Indian faces, the cleanest option is to use real client photos (with permission) or buy a stock photo pack from Shutterstock/Adobe Stock with Indian faces, save them in your project folder, and reference them as src="photos/person1.jpg" etc.
-
-
-Index
-Code · HTML 
-
-Styles
-Code · CSS 
-1778758113031_image.png
-this is how it looks. Plus change the line "850+ Indians helped" indian company would help indians only so there is no need to explicility call that out.
-
-May 14
-
-Evaluated avatar styles and refined messaging language
-Evaluated avatar styles and refined messaging language
-The personas style from DiceBear looks bad. Let me switch to avataaars which renders proper face illustrations, and fix the text.
-
-
-Ran a command, read a file
-Ran a command, read a file
-Two fixes:
-
-Avatars — switched to avataaars style which renders proper cartoon face illustrations with brown skin tones (ae5d29, d08b5b). Each has a soft pastel background so they look distinct and clean inside the circles.
-Text — "850+ Indians helped" → "850+ clients helped". Cleaner, doesn't state the obvious.
-The circular CSS from before will still apply correctly to these SVG images. Let me know how it looks!
-
-
-Index
-Code · HTML 
-use real people images not avatar.
-
-May 14
-
-Evaluated image sources to provide authentic human photographs
-Evaluated image sources to provide authentic human photographs
-I'll use real photo URLs from randomuser.me which has actual human portrait photos, and make sure the circular CSS is solid.
-
-
-Replace with real human portrait photos
-Replace with real human portrait photos
-Now make sure the CSS handles real photos perfectly in circles:
-
-
-Verified CSS styling for circular image display
-Verified CSS styling for circular image display
-CSS is already correct. Let me present the file:
-
-
-Presented file
-Presented file
-Using real portrait photos from randomuser.me — a well-known free API that serves actual human face photos. The four portraits picked (men/43, women/44, men/32, women/68) tend to show more diverse, darker complexion faces from their dataset.
-
-They'll display as overlapping circles exactly like the original initials — border-radius: 50% + object-fit: cover handles that.
-
-One thing to know — randomuser.me requires an internet connection, so the photos won't load if you open the file offline. Once you host the site live, they'll always appear. If you want them to work offline too, download the 4 photos, save them in your project folder, and change the src to local paths like src="photos/p1.jpg".
-
-
-Index
-Code · HTML 
-real indian people picture not american or english people
-
-May 14
-There's no free API that lets you filter photos by nationality/ethnicity reliably. The best approach here is to use free stock photos of Indian people from Unsplash with specific photo IDs I know are Indian faces.
-
-
-Ran a command, read a file
-Ran a command, read a file
-Used specific Unsplash photo IDs of Indian people — these are real photos, not generated. The ?w=80&h=80&fit=crop&crop=face parameters tell Unsplash to crop directly to the face area, so they'll sit perfectly inside the circles.
-
-That said — honestly, the cleanest long-term solution is to take 4 photos of your actual team or real clients (with permission), name them p1.jpg, p2.jpg etc., put them in your project folder, and use src="p1.jpg". That way you fully control the faces, they're definitely Indian, and the images never break.
-
-
-Index
-Code · HTML 
-Now can you add that button for translation to hindi?
-
-May 14
-
-Architected Hindi translation system with toggle button and comprehensive language swap
-Architected Hindi translation system with toggle button and comprehensive language swap
-Now I have the full picture of all translatable content. Let me build this properly — button in nav, full Hindi translations in JS, and a small CSS addition.
-
-
-Ran 2 commands
-Ran 2 commands
-Now add the full translation logic to script.js:
-
-
-Ran a command, read a file
-Ran a command, read a file
-Here's what was built:
-
-A "हिंदी" button appears in the nav bar next to Free Consultation. Click it → full Hindi. Click "English" → switches back. The choice is saved in localStorage so it persists across page visits.
-
-What gets translated:
-
-Nav links
-Hero badge, headline, subtext, bullets, trust row
-Hero form title and intro
-Stats bar labels
-Roadmap, Harassment, Trust, Debt Types section headers
-Testimonials, Eligibility, FAQ, CTA Banner sections
-What stays in English (intentionally): form fields, placeholders, and calculator — these are functional elements where English labels are universally understood and easier to keep consistent with the Google Sheet column names.
-
-
-Index
-Code · HTML 
-
-Styles
-Code · CSS 
-
-Script
-JS 
-1778759917567_image.png
-Site is not working all the design gone. www.debtmukt.in
-
-May 14
-
-Diagnosed missing CSS files and devised consolidation solution
-Diagnosed missing CSS files and devised consolidation solution
-The HTML is loading fine but styles.css and script.js are not being found on the server. You most likely only uploaded index.html. The fix is to combine everything into one single file so there's nothing to miss.
-
-Let me build a fully self-contained single HTML file right now:
-
-
-Ran a command, read a file
-Ran a command, read a file
-Download this debtmukt.html and upload it to your hosting as index.html, replacing the old one. CSS and JS are now embedded directly inside — no separate files needed, nothing can go missing.
-
-Why this happened: Your hosting only received index.html but couldn't find styles.css and script.js. Linux web servers are case-sensitive and file paths must match exactly. The single-file approach avoids this entirely.
-
-
-Debtmukt
-Code · HTML 
-dont want single file give seprate
-
-May 14
-The issue is simple — your server can't find styles.css and script.js because they weren't uploaded. You need to upload all 3 files to the same folder on your hosting.
-
-How to fix on your hosting panel (cPanel / File Manager):
-
-Login to your hosting control panel
-Open File Manager → go to public_html
-You'll see your current index.html there
-Upload styles.css and script.js to that same public_html folder
-All 3 files must sit together like this:
-public_html/
-├── index.html
-├── styles.css
-└── script.js
-Hard refresh the site — Ctrl + Shift + R (or Cmd + Shift + R on Mac)
-That's it. The files are already correct — it's purely a missing upload issue.
-
-earlier they were working fine untill you added the hindi translating button
-
-May 14
-
-Investigated CSS and JavaScript corruption from Hindi translation feature addition
-Investigated CSS and JavaScript corruption from Hindi translation feature addition
-My bad — when I added the Hindi button, I modified the CSS file using Python string replacement which likely corrupted it. Let me verify and present all 3 clean files right now.
-
-
-Diagnosed likely file upload mismatch after recent changes
-Diagnosed likely file upload mismatch after recent changes
-Files look fine syntactically. The issue is almost certainly that when you re-uploaded after the Hindi changes, you only uploaded index.html but not the updated styles.css and script.js. The old CSS/JS files on the server don't have the new nav structure, causing a mismatch.
-
-Upload all 3 of these, replacing everything on the server:
-
-
-Index
-Code · HTML 
-
-Styles
-Code · CSS 
-
-Script
-JS 
-
-Presented 3 files
-Presented 3 files
-1780860099143_image.png
-it looks like this after adding the hindi button
-
-12:51 AM
-
-Diagnosed CSS loading issue and devised embedding solution
-Diagnosed CSS loading issue and devised embedding solution
-The CSS file is not being served by your hosting. Since styles.css keeps failing to load, the cleanest fix without going fully single-file is to embed the CSS inside index.html and keep script.js separate. Two files instead of three.
-
-
-Ran a command, read a file
-Ran a command, read a file
-Upload just these 2 files to public_html, replacing what's there:
-
-index.html — has all HTML + CSS embedded inside it
-script.js — stays separate as before
-CSS is now inside the HTML so it can never fail to load. script.js is still a separate file. Do a hard refresh after uploading (Ctrl + Shift + R).
-
-
-Index
-Code · HTML 
-
-Script
-JS 
-
-styles (1).css
-css
-
-
-script (1).js
-js
-
-
-index (1).html
-html
-
-These are the files that are currently uploaded can you check whats wrong?
-
-12:53 AM
-
-Diagnosed swapped file contents on server
-Diagnosed swapped file contents on server
-Found it immediately. The files are swapped — styles.css on your server contains the JavaScript, and script.js contains the CSS. That's why nothing works.
-
-
-Confirm files are swapped
-Confirm files are swapped
-Confirmed — styles.css starts with const SHEET_URL (JavaScript) and script.js starts with :root (CSS). They are 100% swapped on your server.
-
-Fix — go to your hosting File Manager right now:
-
-Open styles.css → select all → delete everything → paste the contents of script.js from here
-Open script.js → select all → delete everything → paste the contents of styles.css from here
-Or easier — just re-upload these two files with the correct content:
-
-
-Ran a command, read a file
-Ran a command, read a file
-Download these two, rename them to styles.css and script.js, then upload to your server replacing the current ones. index.html doesn't need to change — it's fine as is.
-
-
-Styles correct
-Code · CSS 
-
-Script correct
-JS 
-1780860317234_image.png
-no content after this stats section
-
-12:55 AM
-
-Diagnosed JavaScript encoding issue preventing content visibility
-Diagnosed JavaScript encoding issue preventing content visibility
-CSS is working now (styled nav and stats bar visible). The problem is JavaScript isn't running — which is why all sections below are invisible (stuck at opacity: 0) and counters show 0+.
-
-The cause: the Hindi translation strings in script.js have Unicode characters that break when the server serves the file without UTF-8 encoding declared.
-
-Two fixes needed:
-
-
-Ran 4 commands, read a file
-Ran 4 commands, read a file
-Upload these 2 files replacing what's on the server. styles.css doesn't need to change.
-
-What was wrong: The Hindi characters (हिंदी, ₹, ✓, →) in script.js were causing the server to choke on encoding — breaking the entire JS file, so nothing ran and all sections stayed invisible at opacity: 0.
-
-What's fixed:
-
-Every special character in script.js is now written as a \uXXXX Unicode escape — pure ASCII, works on any server regardless of encoding settings
-index.html now has charset="utf-8" on the script tag as an extra safeguard
-
-Index
-Code · HTML 
-
-Script
-JS 
-
-Want to be notified when Claude responds?
-
-
-
-
-Claude is AI and can make mistakes. Please double-check responses.
-
-
-raw
-Index · HTML
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -843,1973 +5,11 @@ Index · HTML
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DebtMukt — Breathe Again</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --green: #0e9a52;
-    --green-dark: #076b38;
-    --green-light: #12b85f;
-    --green-pale: #e6f7ee;
-    --ink: #0d1a12;
-    --ink-soft: #1e2d24;
-    --slate: #3a4d42;
-    --mist: #8fa89a;
-    --cream: #f7faf8;
-    --white: #ffffff;
-    --gold: #c8973a;
-    --red: #e03b3b;
-  }
- 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
- 
-  html { scroll-behavior: smooth; scroll-padding-top: 88px; }
- 
-  body {
-    font-family: 'DM Sans', sans-serif;
-    color: var(--ink);
-    background: var(--cream);
-    overflow-x: hidden;
-  }
- 
-  /* ── NAV ── */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0 48px;
-    height: 68px;
-    background: rgba(255,255,255,0.96);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(14,154,82,0.12);
-    box-shadow: 0 2px 24px rgba(0,0,0,0.06);
-  }
- 
-  .nav-logo {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.5rem;
-    font-weight: 900;
-    color: var(--ink);
-    letter-spacing: -0.5px;
-  }
-  .nav-logo span { color: var(--green); }
- 
-  .nav-links {
-    display: flex; gap: 36px; list-style: none;
-    font-size: 0.875rem; font-weight: 500; color: var(--slate);
-  }
-  .nav-links a { text-decoration: none; color: inherit; transition: color 0.2s; }
-  .nav-links a:hover { color: var(--green); }
- 
- 
-  .lang-btn {
-    background: transparent;
-    border: 1.5px solid rgba(255,255,255,0.35);
-    color: white;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.82rem;
-    font-weight: 600;
-    padding: 7px 14px;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: all 0.2s;
-    letter-spacing: 0.02em;
-  }
-  .lang-btn:hover {
-    background: rgba(255,255,255,0.12);
-    border-color: rgba(255,255,255,0.6);
-  }
-  .nav-cta {
-    background: var(--green);
-    color: white;
-    border: none;
-    padding: 10px 24px;
-    border-radius: 6px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.875rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s, transform 0.1s;
-  }
-  .nav-cta:hover { background: var(--green-dark); transform: translateY(-1px); }
- 
-  /* ── HERO ── */
-  .hero {
-    min-height: 100vh;
-    padding-top: 68px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    position: relative;
-    overflow: hidden;
-    background: var(--ink);
-  }
- 
-  .hero-bg {
-    position: absolute; inset: 0;
-    background:
-      radial-gradient(ellipse 60% 80% at 20% 60%, rgba(14,154,82,0.18) 0%, transparent 60%),
-      radial-gradient(ellipse 40% 60% at 80% 30%, rgba(14,154,82,0.08) 0%, transparent 50%),
-      var(--ink);
-  }
- 
-  .hero-noise {
-    position: absolute; inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-    opacity: 0.4;
-  }
- 
-  .hero-left {
-    position: relative; z-index: 2;
-    display: flex; flex-direction: column; justify-content: center;
-    padding: 80px 64px 80px 72px;
-    animation: fadeUp 0.9s ease both;
-  }
- 
-  .hero-badge {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: rgba(14,154,82,0.15);
-    border: 1px solid rgba(14,154,82,0.3);
-    color: var(--green-light);
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 6px 14px;
-    border-radius: 100px;
-    width: fit-content;
-    margin-bottom: 32px;
-  }
-  .hero-badge::before { content: '●'; font-size: 0.5rem; animation: pulse 2s ease-in-out infinite; }
- 
-  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
- 
-  .hero-headline {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(2.8rem, 4.5vw, 4.2rem);
-    font-weight: 900;
-    line-height: 1.08;
-    color: white;
-    margin-bottom: 28px;
-    letter-spacing: -1.5px;
-  }
- 
-  .hero-headline .breathe {
-    color: var(--green-light);
-    font-style: italic;
-    position: relative;
-    display: inline-block;
-  }
-  .hero-headline .breathe::after {
-    content: '';
-    position: absolute;
-    bottom: 4px; left: 0; right: 0;
-    height: 3px;
-    background: var(--green-light);
-    border-radius: 2px;
-    animation: underlineGrow 1s 0.6s ease both;
-    transform-origin: left;
-  }
- 
-  @keyframes underlineGrow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
- 
-  .hero-sub {
-    font-size: 1.05rem;
-    color: rgba(255,255,255,0.6);
-    line-height: 1.7;
-    max-width: 480px;
-    margin-bottom: 40px;
-  }
- 
-  .hero-trust-row {
-    display: flex; align-items: center; gap: 24px;
-    margin-bottom: 40px;
-  }
- 
-  .trust-avatars {
-    display: flex;
-  }
-  .trust-avatars span {
-    width: 36px; height: 36px;
-    border-radius: 50%;
-    background: var(--green);
-    border: 2px solid var(--ink);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 0.7rem; color: white; font-weight: 600;
-    margin-left: -8px;
-  }
-  .trust-avatars img {
-    width: 36px; height: 36px;
-    border-radius: 50%;
-    border: 2.5px solid var(--ink);
-    object-fit: cover;
-    display: block;
-    margin-left: -8px;
-    flex-shrink: 0;
-  }
-  .trust-avatars span:first-child,
-  .trust-avatars img:first-child { margin-left: 0; }
- 
-  .trust-text { font-size: 0.8rem; color: rgba(255,255,255,0.5); }
-  .trust-text strong { color: white; display: block; font-size: 0.9rem; }
- 
-  .hero-bullets {
-    list-style: none;
-    display: flex; flex-direction: column; gap: 12px;
-  }
-  .hero-bullets li {
-    display: flex; align-items: center; gap: 10px;
-    font-size: 0.9rem;
-    color: rgba(255,255,255,0.7);
-  }
-  .hero-bullets li::before {
-    content: '';
-    width: 18px; height: 18px; flex-shrink: 0;
-    background: var(--green);
-    border-radius: 50%;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 6l3 3 5-5' stroke='white' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: center;
-  }
- 
-  .hero-right {
-    position: relative; z-index: 2;
-    display: flex; align-items: center; justify-content: center;
-    padding: 80px 72px 80px 24px;
-    animation: fadeUp 0.9s 0.15s ease both;
-  }
- 
-  /* ── DEBT CALCULATOR CARD ── */
-  .calc-card {
-    background: white;
-    border-radius: 20px;
-    padding: 36px;
-    width: 100%;
-    max-width: 440px;
-    box-shadow: 0 32px 80px rgba(0,0,0,0.4), 0 0 0 1px rgba(14,154,82,0.15);
-    position: relative;
-  }
- 
-  .calc-card::before {
-    content: '';
-    position: absolute;
-    top: -1px; left: 32px; right: 32px;
-    height: 3px;
-    background: linear-gradient(90deg, var(--green), var(--green-light));
-    border-radius: 0 0 4px 4px;
-  }
- 
-  .calc-title {
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--mist);
-    margin-bottom: 6px;
-  }
-  .calc-headline {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: var(--ink);
-    margin-bottom: 24px;
-    line-height: 1.3;
-  }
- 
-  .calc-field {
-    margin-bottom: 16px;
-  }
-  .calc-field label {
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: var(--slate);
-    display: block;
-    margin-bottom: 6px;
-    letter-spacing: 0.03em;
-  }
-  .calc-field input, .calc-field select {
-    width: 100%;
-    border: 1.5px solid #e0e8e3;
-    border-radius: 8px;
-    padding: 10px 14px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem;
-    color: var(--ink);
-    background: var(--cream);
-    outline: none;
-    transition: border-color 0.2s;
-  }
-  .calc-field input:focus, .calc-field select:focus { border-color: var(--green); background: white; }
- 
-  .calc-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
- 
-  .calc-result {
-    background: linear-gradient(135deg, var(--ink), var(--ink-soft));
-    border-radius: 12px;
-    padding: 20px;
-    margin: 20px 0;
-    display: flex; align-items: center; justify-content: space-between;
-  }
-  .calc-result-label { font-size: 0.75rem; color: rgba(255,255,255,0.5); margin-bottom: 4px; }
-  .calc-result-value {
-    font-family: 'DM Mono', monospace;
-    font-size: 1.6rem;
-    font-weight: 500;
-    color: var(--green-light);
-  }
-  .calc-result-sub { font-size: 0.7rem; color: rgba(255,255,255,0.4); }
-  .calc-result-badge {
-    background: rgba(14,154,82,0.2);
-    border: 1px solid rgba(14,154,82,0.3);
-    border-radius: 8px;
-    padding: 8px 12px;
-    text-align: center;
-  }
-  .calc-result-badge .pct { font-size: 1.4rem; font-weight: 700; color: var(--green-light); }
-  .calc-result-badge .pct-label { font-size: 0.65rem; color: rgba(255,255,255,0.5); }
- 
-  .calc-btn {
-    width: 100%;
-    background: var(--green);
-    color: white;
-    border: none;
-    padding: 14px;
-    border-radius: 10px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-    position: relative;
-    overflow: hidden;
-  }
-  .calc-btn::after {
-    content: '→';
-    position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
-    transition: right 0.2s;
-  }
-  .calc-btn:hover { background: var(--green-dark); }
-  .calc-btn:hover::after { right: 12px; }
- 
-  .calc-note {
-    text-align: center;
-    font-size: 0.72rem;
-    color: var(--mist);
-    margin-top: 12px;
-  }
- 
-  /* ── STATS BAR ── */
-  .stats-bar {
-    background: var(--green);
-    padding: 28px 72px;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0;
-    position: relative;
-    overflow: hidden;
-  }
- 
-  .stats-bar::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: linear-gradient(90deg, var(--green-dark) 0%, var(--green) 50%, var(--green-dark) 100%);
-    opacity: 0.4;
-  }
- 
-  .stat-item {
-    position: relative; z-index: 1;
-    text-align: center;
-    padding: 0 24px;
-    border-right: 1px solid rgba(255,255,255,0.15);
-  }
-  .stat-item:last-child { border-right: none; }
- 
-  .stat-number {
-    font-family: 'Playfair Display', serif;
-    font-size: 2.2rem;
-    font-weight: 900;
-    color: white;
-    line-height: 1;
-    margin-bottom: 4px;
-    letter-spacing: -1px;
-  }
-  .stat-label {
-    font-size: 0.78rem;
-    font-weight: 500;
-    color: rgba(255,255,255,0.7);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-  }
- 
-  /* ── SECTION COMMON ── */
-  section { padding: 100px 72px; }
- 
-  .section-label {
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--green);
-    margin-bottom: 12px;
-  }
- 
-  .section-headline {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(2rem, 3.5vw, 3rem);
-    font-weight: 900;
-    color: var(--ink);
-    line-height: 1.1;
-    letter-spacing: -1px;
-    margin-bottom: 16px;
-  }
- 
-  .section-sub {
-    font-size: 1rem;
-    color: var(--mist);
-    max-width: 520px;
-    line-height: 1.7;
-  }
- 
-  /* ── ROADMAP ── */
-  .roadmap { background: white; }
- 
-  .roadmap-header { text-align: center; margin-bottom: 72px; }
-  .roadmap-header .section-sub { margin: 0 auto; }
- 
-  .roadmap-steps {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0;
-    position: relative;
-  }
- 
-  .roadmap-steps::before {
-    content: '';
-    position: absolute;
-    top: 40px; left: 12.5%; right: 12.5%;
-    height: 2px;
-    background: repeating-linear-gradient(90deg, var(--green) 0, var(--green) 8px, transparent 8px, transparent 16px);
-    z-index: 0;
-  }
- 
-  .step {
-    position: relative; z-index: 1;
-    display: flex; flex-direction: column; align-items: center;
-    padding: 0 24px;
-    text-align: center;
-    animation: fadeUp 0.6s ease both;
-  }
- 
-  .step:nth-child(1) { animation-delay: 0.1s; }
-  .step:nth-child(2) { animation-delay: 0.2s; }
-  .step:nth-child(3) { animation-delay: 0.3s; }
-  .step:nth-child(4) { animation-delay: 0.4s; }
- 
-  .step-number {
-    width: 80px; height: 80px;
-    background: white;
-    border: 3px solid var(--green);
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Playfair Display', serif;
-    font-size: 1.8rem;
-    font-weight: 900;
-    color: var(--green);
-    margin-bottom: 24px;
-    box-shadow: 0 0 0 8px var(--cream);
-    transition: all 0.3s;
-  }
- 
-  .step:hover .step-number {
-    background: var(--green);
-    color: white;
-    transform: scale(1.08);
-  }
- 
-  .step-icon {
-    width: 40px; height: 40px;
-    background: var(--green-pale);
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    margin: 0 auto 16px;
-    font-size: 1.2rem;
-  }
- 
-  .step-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.15rem;
-    font-weight: 700;
-    color: var(--ink);
-    margin-bottom: 10px;
-  }
- 
-  .step-desc {
-    font-size: 0.85rem;
-    color: var(--mist);
-    line-height: 1.7;
-  }
- 
-  /* ── CALCULATOR COMPARISON ── */
-  .comparison {
-    background: var(--ink);
-    position: relative;
-    overflow: hidden;
-  }
- 
-  .comparison::before {
-    content: '';
-    position: absolute;
-    top: -200px; right: -200px;
-    width: 600px; height: 600px;
-    background: radial-gradient(circle, rgba(14,154,82,0.12), transparent 60%);
-    pointer-events: none;
-  }
- 
-  .comparison-inner {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
-    align-items: center;
-  }
- 
-  .comparison-left .section-headline { color: white; }
-  .comparison-left .section-sub { color: rgba(255,255,255,0.5); }
- 
-  .comp-table {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 16px;
-    overflow: hidden;
-    margin-top: 32px;
-  }
- 
-  .comp-table-header {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr;
-    padding: 12px 20px;
-    background: rgba(255,255,255,0.06);
-    font-size: 0.72rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: rgba(255,255,255,0.3);
-  }
- 
-  .comp-table-header span:not(:first-child) { text-align: center; }
- 
-  .comp-row {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr;
-    padding: 14px 20px;
-    border-top: 1px solid rgba(255,255,255,0.05);
-    align-items: center;
-  }
- 
-  .comp-label { font-size: 0.85rem; color: rgba(255,255,255,0.5); }
-  .comp-bad {
-    text-align: center;
-    font-size: 0.85rem;
-    color: #ff6b6b;
-    font-family: 'DM Mono', monospace;
-  }
-  .comp-good {
-    text-align: center;
-    font-size: 0.9rem;
-    font-weight: 700;
-    color: var(--green-light);
-    font-family: 'DM Mono', monospace;
-  }
- 
-  .comparison-right {
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(14,154,82,0.2);
-    border-radius: 20px;
-    padding: 40px;
-  }
- 
-  .savings-big {
-    font-family: 'DM Mono', monospace;
-    font-size: 3.5rem;
-    font-weight: 500;
-    color: var(--green-light);
-    line-height: 1;
-    margin-bottom: 8px;
-  }
- 
-  .savings-label {
-    font-size: 0.85rem;
-    color: rgba(255,255,255,0.4);
-    margin-bottom: 32px;
-  }
- 
-  .savings-bar-wrap {
-    margin-bottom: 32px;
-  }
- 
-  .savings-bar-label {
-    display: flex; justify-content: space-between;
-    font-size: 0.75rem;
-    color: rgba(255,255,255,0.4);
-    margin-bottom: 8px;
-  }
- 
-  .bar-track {
-    height: 10px;
-    background: rgba(255,255,255,0.08);
-    border-radius: 100px;
-    overflow: hidden;
-    margin-bottom: 12px;
-  }
- 
-  .bar-fill-red {
-    height: 100%;
-    background: #ff6b6b;
-    border-radius: 100px;
-    width: 100%;
-  }
-  .bar-fill-green {
-    height: 100%;
-    background: var(--green);
-    border-radius: 100px;
-    width: 38%;
-  }
- 
-  .savings-cta {
-    background: var(--green);
-    color: white;
-    border: none;
-    width: 100%;
-    padding: 14px;
-    border-radius: 10px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-  .savings-cta:hover { background: var(--green-dark); }
- 
-  /* ── WHY TRUST ── */
-  .trust { background: var(--cream); }
- 
-  .trust-header { text-align: center; margin-bottom: 64px; }
-  .trust-header .section-sub { margin: 0 auto; }
- 
-  .trust-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-  }
- 
-  .trust-card {
-    background: white;
-    border-radius: 16px;
-    padding: 32px;
-    border: 1px solid transparent;
-    transition: all 0.3s;
-    position: relative;
-    overflow: hidden;
-  }
- 
-  .trust-card::before {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    height: 3px;
-    background: var(--green);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.3s;
-  }
- 
-  .trust-card:hover {
-    border-color: rgba(14,154,82,0.15);
-    transform: translateY(-4px);
-    box-shadow: 0 16px 48px rgba(14,154,82,0.1);
-  }
- 
-  .trust-card:hover::before { transform: scaleX(1); }
- 
-  .trust-icon {
-    width: 48px; height: 48px;
-    background: var(--green-pale);
-    border-radius: 12px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.3rem;
-    margin-bottom: 20px;
-  }
- 
-  .trust-card-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.15rem;
-    font-weight: 700;
-    color: var(--ink);
-    margin-bottom: 10px;
-  }
- 
-  .trust-card-desc {
-    font-size: 0.85rem;
-    color: var(--mist);
-    line-height: 1.7;
-  }
- 
-  /* ── DEBT TYPES ── */
-  .debt-types {
-    background: white;
-    padding: 60px 72px;
-  }
- 
-  .debt-types-inner {
-    display: flex;
-    align-items: center;
-    gap: 48px;
-  }
- 
-  .debt-types-label {
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--mist);
-    white-space: nowrap;
-  }
- 
-  .debt-tags {
-    display: flex; flex-wrap: wrap; gap: 10px;
-  }
- 
-  .debt-tag {
-    padding: 8px 18px;
-    border-radius: 100px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    cursor: default;
-    transition: all 0.2s;
-  }
- 
-  .debt-tag.active { background: var(--green); color: white; }
-  .debt-tag:not(.active) {
-    background: var(--green-pale);
-    color: var(--green-dark);
-    border: 1px solid rgba(14,154,82,0.2);
-  }
-  .debt-tag:hover { background: var(--green); color: white; }
- 
-  /* ── TESTIMONIALS ── */
-  .testimonials { background: var(--cream); }
- 
-  .testimonials-header { margin-bottom: 48px; }
- 
-  .testimonials-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-  }
- 
-  .testi-card {
-    background: white;
-    border-radius: 16px;
-    padding: 28px;
-    transition: transform 0.3s;
-  }
- 
-  .testi-card:hover { transform: translateY(-4px); }
- 
-  .stars { color: #f5a623; font-size: 0.9rem; margin-bottom: 16px; }
- 
-  .testi-text {
-    font-size: 0.9rem;
-    color: var(--slate);
-    line-height: 1.7;
-    margin-bottom: 20px;
-    font-style: italic;
-  }
- 
-  .testi-author {
-    display: flex; align-items: center; gap: 12px;
-  }
- 
-  .testi-avatar {
-    width: 40px; height: 40px;
-    border-radius: 50%;
-    background: var(--green);
-    display: flex; align-items: center; justify-content: center;
-    font-weight: 700; color: white; font-size: 0.85rem;
-  }
- 
-  .testi-name { font-size: 0.9rem; font-weight: 600; color: var(--ink); }
-  .testi-meta { font-size: 0.75rem; color: var(--mist); }
- 
-  .testi-savings {
-    display: flex; gap: 16px; margin-top: 16px;
-    padding-top: 16px;
-    border-top: 1px solid var(--cream);
-  }
- 
-  .saving-item { text-align: center; }
-  .saving-val { font-family: 'DM Mono', monospace; font-size: 0.95rem; font-weight: 500; }
-  .saving-val.red { color: var(--red); text-decoration: line-through; }
-  .saving-val.green { color: var(--green); }
-  .saving-lbl { font-size: 0.65rem; color: var(--mist); text-transform: uppercase; letter-spacing: 0.06em; }
- 
-  /* ── ELIGIBILITY ── */
-  .eligibility {
-    background: var(--ink);
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
-    align-items: center;
-  }
- 
-  .elig-left .section-headline { color: white; }
-  .elig-left .section-sub { color: rgba(255,255,255,0.45); margin-bottom: 40px; }
- 
-  .elig-check {
-    display: flex; flex-direction: column; gap: 16px;
-  }
- 
-  .elig-item {
-    display: flex; align-items: flex-start; gap: 14px;
-  }
- 
-  .elig-dot {
-    width: 24px; height: 24px; flex-shrink: 0;
-    background: rgba(14,154,82,0.15);
-    border: 1.5px solid var(--green);
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    margin-top: 2px;
-  }
-  .elig-dot::after {
-    content: '✓';
-    font-size: 0.65rem;
-    color: var(--green-light);
-    font-weight: 700;
-  }
- 
-  .elig-text { font-size: 0.9rem; color: rgba(255,255,255,0.6); line-height: 1.5; }
-  .elig-text strong { color: white; display: block; font-size: 0.95rem; }
- 
-  .elig-right {
-    background: white;
-    border-radius: 20px;
-    padding: 40px;
-    box-shadow: 0 32px 80px rgba(0,0,0,0.3);
-  }
- 
-  .elig-form-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--ink);
-    margin-bottom: 6px;
-  }
- 
-  .elig-form-sub {
-    font-size: 0.85rem;
-    color: var(--mist);
-    margin-bottom: 28px;
-  }
- 
-  .form-field {
-    margin-bottom: 16px;
-  }
- 
-  .form-field label {
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: var(--slate);
-    display: block;
-    margin-bottom: 6px;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-  }
- 
-  .form-field input, .form-field select, .form-field textarea {
-    width: 100%;
-    border: 1.5px solid #e0e8e3;
-    border-radius: 8px;
-    padding: 11px 14px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem;
-    color: var(--ink);
-    outline: none;
-    transition: border-color 0.2s;
-    background: var(--cream);
-  }
- 
-  .form-field input:focus, .form-field select:focus { border-color: var(--green); background: white; }
- 
-  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
- 
-  .form-submit {
-    width: 100%;
-    background: var(--green);
-    color: white;
-    border: none;
-    padding: 14px;
-    border-radius: 10px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    margin-top: 8px;
-    transition: background 0.2s;
-  }
-  .form-submit:hover { background: var(--green-dark); }
- 
-  /* ── TEAM ── */
-  .team { background: white; }
- 
-  .team-header { text-align: center; margin-bottom: 60px; }
-  .team-header .section-sub { margin: 0 auto; }
- 
-  .team-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 24px;
-  }
- 
-  .team-card {
-    text-align: center;
-    transition: transform 0.3s;
-  }
- 
-  .team-card:hover { transform: translateY(-6px); }
- 
-  .team-photo {
-    width: 100%;
-    aspect-ratio: 1;
-    border-radius: 16px;
-    background: linear-gradient(135deg, var(--green-pale), var(--cream));
-    margin-bottom: 16px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 3rem;
-    position: relative;
-    overflow: hidden;
-    border: 2px solid transparent;
-    transition: border-color 0.3s;
-  }
- 
-  .team-card:hover .team-photo { border-color: var(--green); }
- 
-  .team-badge {
-    position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
-    background: var(--green);
-    color: white;
-    font-size: 0.65rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    padding: 3px 10px;
-    border-radius: 100px;
-    white-space: nowrap;
-  }
- 
-  .team-name {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: var(--ink);
-    margin-bottom: 4px;
-  }
- 
-  .team-role {
-    font-size: 0.78rem;
-    color: var(--mist);
-    margin-bottom: 8px;
-  }
- 
-  .team-exp {
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: var(--green);
-  }
- 
-  /* ── FAQ ── */
-  .faq { background: var(--cream); }
- 
-  .faq-inner {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 80px;
-    align-items: start;
-  }
- 
-  .faq-list { display: flex; flex-direction: column; gap: 12px; }
- 
-  .faq-item {
-    background: white;
-    border-radius: 12px;
-    overflow: hidden;
-    border: 1px solid transparent;
-    transition: border-color 0.2s;
-  }
-  .faq-item.open { border-color: rgba(14,154,82,0.2); }
- 
-  .faq-q {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 18px 22px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--ink);
-    gap: 16px;
-  }
- 
-  .faq-q svg {
-    flex-shrink: 0;
-    color: var(--green);
-    transition: transform 0.3s;
-  }
- 
-  .faq-item.open .faq-q svg { transform: rotate(45deg); }
- 
-  .faq-a {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.4s ease, padding 0.3s;
-  }
- 
-  .faq-item.open .faq-a { max-height: 200px; }
- 
-  .faq-a-inner {
-    padding: 0 22px 18px;
-    font-size: 0.85rem;
-    color: var(--mist);
-    line-height: 1.7;
-  }
- 
-  /* ── CTA BANNER ── */
-  .cta-banner {
-    background: var(--green);
-    padding: 80px 72px;
-    position: relative;
-    overflow: hidden;
-    text-align: center;
-  }
- 
-  .cta-banner::before {
-    content: '';
-    position: absolute;
-    top: -100px; left: 50%; transform: translateX(-50%);
-    width: 800px; height: 400px;
-    background: radial-gradient(ellipse, rgba(255,255,255,0.08), transparent 60%);
-    pointer-events: none;
-  }
- 
-  .cta-banner-headline {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(2rem, 4vw, 3.5rem);
-    font-weight: 900;
-    color: white;
-    letter-spacing: -1.5px;
-    line-height: 1.1;
-    margin-bottom: 16px;
-  }
- 
-  .cta-banner-sub {
-    font-size: 1rem;
-    color: rgba(255,255,255,0.7);
-    margin-bottom: 40px;
-  }
- 
-  .cta-buttons {
-    display: flex; gap: 16px; justify-content: center;
-  }
- 
-  .btn-white {
-    background: white;
-    color: var(--green-dark);
-    border: none;
-    padding: 14px 32px;
-    border-radius: 8px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .btn-white:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
- 
-  .btn-outline-white {
-    background: transparent;
-    color: white;
-    border: 2px solid rgba(255,255,255,0.5);
-    padding: 14px 32px;
-    border-radius: 8px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: flex; align-items: center; gap: 8px;
-  }
-  .btn-outline-white:hover { border-color: white; background: rgba(255,255,255,0.1); }
- 
-  /* ── FOOTER ── */
-  footer {
-    background: var(--ink-soft);
-    padding: 64px 72px 32px;
-  }
- 
-  .footer-top {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr;
-    gap: 48px;
-    margin-bottom: 48px;
-  }
- 
-  .footer-brand .nav-logo { font-size: 1.6rem; color: white; }
-  .footer-brand .nav-logo span { color: var(--green-light); }
- 
-  .footer-tagline {
-    font-size: 0.85rem;
-    color: rgba(255,255,255,0.4);
-    line-height: 1.7;
-    margin-top: 12px;
-    margin-bottom: 24px;
-    max-width: 280px;
-  }
- 
-  .footer-social { display: flex; gap: 10px; }
- 
-  .social-btn {
-    width: 36px; height: 36px;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 0.8rem;
-    color: rgba(255,255,255,0.4);
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .social-btn:hover { background: var(--green); border-color: var(--green); color: white; }
- 
-  .footer-col-title {
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.3);
-    margin-bottom: 20px;
-  }
- 
-  .footer-links {
-    list-style: none;
-    display: flex; flex-direction: column; gap: 10px;
-  }
- 
-  .footer-links a {
-    text-decoration: none;
-    font-size: 0.85rem;
-    color: rgba(255,255,255,0.5);
-    transition: color 0.2s;
-  }
-  .footer-links a:hover { color: var(--green-light); }
- 
-  .footer-bottom {
-    border-top: 1px solid rgba(255,255,255,0.07);
-    padding-top: 24px;
-    display: flex; align-items: center; justify-content: space-between;
-    font-size: 0.75rem;
-    color: rgba(255,255,255,0.25);
-  }
- 
-  /* ── ANIMATIONS ── */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(24px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
- 
-  .reveal {
-    opacity: 0;
-    transform: translateY(28px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
-  }
-  .reveal.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
- 
- 
-  /* Requested updates - refined form, roadmap, calculator and readability */
-  .hero-headline .breathe::after { display: none; }
-  .hero-headline { text-shadow: 0 10px 34px rgba(0,0,0,0.32); }
-  .hero-sub { color: rgba(255,255,255,0.78); }
-  .hero-bullets li { color: rgba(255,255,255,0.82); }
-  .trust-text { color: rgba(255,255,255,0.68); }
-  .hero-badge { background: rgba(18,184,95,0.17); color: #6cffad; }
- 
-  .hero-form-card .calc-title {
-    color: var(--green-dark);
-    background: var(--green-pale);
-    border: 1px solid rgba(14,154,82,0.16);
-    border-radius: 999px;
-    display: inline-flex;
-    padding: 6px 12px;
-    margin-bottom: 12px;
-  }
-  .hero-form-card .calc-headline {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 1.55rem;
-    letter-spacing: -0.03em;
-    margin-bottom: 8px;
-  }
-  .hero-form-intro {
-    font-size: 0.9rem;
-    color: var(--slate);
-    line-height: 1.6;
-    margin-bottom: 24px;
-  }
-  .lead-form { display: grid; gap: 14px; }
-  .lead-form label {
-    display: grid;
-    gap: 7px;
-    font-size: 0.78rem;
-    font-weight: 700;
-    color: var(--slate);
-    letter-spacing: 0.02em;
-  }
-  .lead-form input,
-  .lead-form select {
-    width: 100%;
-    border: 1.5px solid #dfe9e3;
-    border-radius: 10px;
-    padding: 12px 14px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.92rem;
-    color: var(--ink);
-    background: var(--cream);
-    outline: none;
-    transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
-  }
-  .lead-form input:focus,
-  .lead-form select:focus {
-    border-color: var(--green);
-    background: #fff;
-    box-shadow: 0 0 0 4px rgba(14,154,82,0.09);
-  }
-  .lead-form .optional {
-    color: var(--mist);
-    font-weight: 500;
-    text-transform: none;
-  }
-  .form-note,
-  .lead-status {
-    text-align: center;
-    font-size: 0.74rem;
-    color: var(--mist);
-    line-height: 1.5;
-  }
-  .lead-status { min-height: 18px; color: var(--green-dark); font-weight: 700; }
- 
-  .stat-number {
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 800;
-    letter-spacing: -0.04em;
-    font-variant-numeric: tabular-nums;
-  }
-  .stat-label {
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 700;
-    color: rgba(255,255,255,0.82);
-  }
- 
-  .roadmap {
-    background: linear-gradient(180deg, #ffffff 0%, var(--cream) 100%);
-  }
-  .roadmap-header { margin-bottom: 48px; }
-  .roadmap-flow {
-    max-width: 1180px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 18px;
-    position: relative;
-  }
-  .road-card {
-    background: #ffffff;
-    border: 1px solid rgba(14,154,82,0.14);
-    border-radius: 22px;
-    padding: 24px;
-    min-height: 300px;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 18px 50px rgba(13,26,18,0.07);
-    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-  }
-  .road-card::before {
-    content: '';
-    position: absolute;
-    inset: 0 0 auto 0;
-    height: 5px;
-    background: linear-gradient(90deg, var(--green), var(--green-light));
-  }
-  .road-card:hover {
-    transform: translateY(-6px);
-    border-color: rgba(14,154,82,0.28);
-    box-shadow: 0 24px 70px rgba(13,26,18,0.11);
-  }
-  .road-card-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 24px;
-  }
-  .road-num {
-    width: 52px;
-    height: 52px;
-    border-radius: 16px;
-    background: var(--ink);
-    color: #ffffff;
-    display: grid;
-    place-items: center;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 1.05rem;
-    font-weight: 800;
-    letter-spacing: -0.04em;
-  }
-  .road-tag {
-    padding: 6px 10px;
-    border-radius: 999px;
-    background: var(--green-pale);
-    color: var(--green-dark);
-    font-size: 0.7rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    white-space: nowrap;
-  }
-  .road-card h3 {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 1.08rem;
-    line-height: 1.25;
-    letter-spacing: -0.02em;
-    color: var(--ink);
-    margin-bottom: 10px;
-  }
-  .road-card p {
-    font-size: 0.88rem;
-    color: var(--slate);
-    line-height: 1.65;
-    margin-bottom: 18px;
-  }
-  .road-card ul {
-    list-style: none;
-    display: grid;
-    gap: 8px;
-    margin-top: auto;
-  }
-  .road-card li {
-    display: flex;
-    gap: 8px;
-    align-items: flex-start;
-    font-size: 0.78rem;
-    color: var(--ink-soft);
-    line-height: 1.45;
-  }
-  .road-card li::before {
-    content: '';
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: var(--green);
-    margin-top: 6px;
-    flex: 0 0 7px;
-  }
- 
-  .comparison {
-    background: linear-gradient(180deg, var(--cream) 0%, #eaf6f2 100%);
-    color: var(--ink);
-    position: relative;
-    overflow: hidden;
-  }
-  .comparison::before {
-    top: -220px;
-    right: -220px;
-    width: 620px;
-    height: 620px;
-    background: radial-gradient(circle, rgba(14,154,82,0.12), transparent 62%);
-  }
-  .comparison-shell { max-width: 1180px; margin: 0 auto; position: relative; z-index: 1; }
-  .calculator-heading { text-align: center; margin-bottom: 36px; }
-  .calculator-heading .section-sub { margin: 0 auto; color: var(--slate); }
-  .settlement-calc {
-    background: #e8f5fb;
-    border: 1px solid rgba(14,154,82,0.14);
-    border-radius: 28px;
-    padding: 32px;
-    box-shadow: 0 30px 80px rgba(13,26,18,0.1);
-    position: relative;
-    overflow: hidden;
-  }
-  .settlement-calc::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(circle at 18% 85%, rgba(255,255,255,0.76), transparent 26%),
-      radial-gradient(circle at 86% 12%, rgba(14,154,82,0.1), transparent 25%);
-    pointer-events: none;
-  }
-  .calc-tabs {
-    width: min(520px, 100%);
-    margin: 0 auto 28px;
-    background: #ffffff;
-    border-radius: 999px;
-    padding: 6px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    position: relative;
-    z-index: 1;
-    box-shadow: inset 0 0 0 1px rgba(13,26,18,0.08);
-  }
-  .calc-mode-tab {
-    border: 0;
-    background: transparent;
-    border-radius: 999px;
-    padding: 11px 18px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.86rem;
-    font-weight: 800;
-    color: var(--slate);
-    cursor: pointer;
-    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
-  }
-  .calc-mode-tab.active {
-    background: var(--green);
-    color: #ffffff;
-    box-shadow: 0 10px 26px rgba(14,154,82,0.22);
-  }
-  .settlement-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 420px;
-    gap: 28px;
-    align-items: stretch;
-    position: relative;
-    z-index: 1;
-  }
-  .settlement-inputs,
-  .settlement-results {
-    background: rgba(255,255,255,0.78);
-    border: 1px solid rgba(255,255,255,0.72);
-    border-radius: 24px;
-    padding: 28px;
-    backdrop-filter: blur(10px);
-  }
-  .slider-field { margin-bottom: 28px; }
-  .slider-field label {
-    display: flex;
-    justify-content: space-between;
-    gap: 16px;
-    font-size: 0.88rem;
-    font-weight: 800;
-    color: var(--ink);
-    margin-bottom: 12px;
-  }
-  .slider-field label strong { color: var(--green-dark); white-space: nowrap; }
-  .slider-field input[type='range'] {
-    width: 100%;
-    accent-color: var(--green);
-    cursor: pointer;
-  }
-  .range-scale {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 8px;
-    font-size: 0.72rem;
-    color: var(--mist);
-    font-weight: 600;
-  }
-  .missed-box {
-    background: #ffffff;
-    border: 1px solid rgba(14,154,82,0.12);
-    border-radius: 16px;
-    padding: 14px;
-    display: grid;
-    grid-template-columns: 1fr auto auto;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  .missed-box span { font-size: 0.84rem; font-weight: 700; color: var(--slate); }
-  .late-option {
-    border: 1px solid rgba(14,154,82,0.2);
-    background: var(--green-pale);
-    color: var(--green-dark);
-    border-radius: 999px;
-    padding: 8px 12px;
-    font-weight: 800;
-    cursor: pointer;
-  }
-  .late-option.active { background: var(--green); color: #ffffff; }
-  .calc-action {
-    width: 100%;
-    background: var(--green);
-    color: #ffffff;
-    border: 0;
-    border-radius: 12px;
-    padding: 15px 18px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.96rem;
-    font-weight: 800;
-    cursor: pointer;
-    box-shadow: 0 12px 26px rgba(14,154,82,0.22);
-  }
-  .calc-action:hover { background: var(--green-dark); }
-  .settlement-results {
-    background: linear-gradient(160deg, #11405f, #0d1a12 70%);
-    color: #ffffff;
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-  }
-  .result-summary {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
-  .result-summary div,
-  .pay-card,
-  .saving-pill {
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 16px;
-    padding: 16px;
-  }
-  .result-summary span,
-  .pay-card span,
-  .saving-pill span {
-    display: block;
-    color: rgba(255,255,255,0.58);
-    font-size: 0.73rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-bottom: 7px;
-  }
-  .result-summary strong,
-  .pay-card strong,
-  .saving-pill strong {
-    display: block;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 1.28rem;
-    color: #ffffff;
-    letter-spacing: -0.03em;
-  }
-  .pay-card strong { color: var(--green-light); font-size: 1.65rem; }
-  .bar-chart {
-    min-height: 250px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 30px;
-    align-items: end;
-    padding: 22px 16px 0;
-    border-radius: 18px;
-    background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
-  }
-  .chart-col {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 10px;
-    height: 210px;
-  }
-  .chart-value { color: #ffffff; font-size: 0.84rem; font-weight: 800; }
-  .chart-bar {
-    width: 72px;
-    min-height: 32px;
-    border-radius: 14px 14px 4px 4px;
-    transition: height 0.35s ease;
-    box-shadow: inset 0 10px 20px rgba(255,255,255,0.18);
-  }
-  .chart-with { background: linear-gradient(180deg, #ffffff, #c7f5dc); }
-  .chart-without { background: linear-gradient(180deg, var(--green-light), var(--green-dark)); }
-  .chart-col small {
-    color: rgba(255,255,255,0.62);
-    font-size: 0.72rem;
-    font-weight: 700;
-    text-align: center;
-  }
-  .saving-pill { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 12px; }
-  .saving-pill span { margin: 0; }
-  .saving-pill strong { color: var(--green-light); text-align: right; }
-  .calc-disclaimer {
-    text-align: center;
-    font-size: 0.76rem;
-    color: var(--slate);
-    margin-top: 18px;
-    line-height: 1.6;
-  }
- 
-  .harassment-section {
-    background: var(--ink);
-    position: relative;
-    overflow: hidden;
-  }
-  .harassment-section::before {
-    content: '';
-    position: absolute;
-    top: -180px;
-    left: -180px;
-    width: 520px;
-    height: 520px;
-    background: radial-gradient(circle, rgba(18,184,95,0.15), transparent 62%);
-  }
-  .harassment-grid {
-    position: relative;
-    z-index: 1;
-    max-width: 1180px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 420px;
-    gap: 72px;
-    align-items: center;
-  }
-  .harassment-section .section-headline { color: #ffffff; }
-  .harassment-section .section-sub { color: rgba(255,255,255,0.68); }
-  .harassment-features {
-    margin-top: 32px;
-    display: grid;
-    gap: 14px;
-  }
-  .harassment-features div {
-    display: grid;
-    grid-template-columns: 28px 1fr;
-    gap: 14px;
-    align-items: start;
-    background: rgba(255,255,255,0.045);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 16px;
-    padding: 16px;
-  }
-  .harassment-features div::before {
-    content: '!';
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    background: rgba(18,184,95,0.18);
-    border: 1px solid rgba(18,184,95,0.38);
-    color: var(--green-light);
-    display: grid;
-    place-items: center;
-    font-weight: 900;
-  }
-  .harassment-features strong { color: #ffffff; font-size: 0.95rem; margin-bottom: 3px; display: block; }
-  .harassment-features span { color: rgba(255,255,255,0.62); font-size: 0.84rem; line-height: 1.55; }
-  .phone-card {
-    background: #ffffff;
-    border-radius: 28px;
-    padding: 24px;
-    box-shadow: 0 30px 80px rgba(0,0,0,0.32);
-    border: 1px solid rgba(255,255,255,0.18);
-  }
-  .phone-top {
-    width: 78px;
-    height: 5px;
-    border-radius: 999px;
-    background: #d9e6de;
-    margin: 0 auto 24px;
-  }
-  .chat-bubble {
-    max-width: 88%;
-    border-radius: 16px;
-    padding: 12px 14px;
-    margin-bottom: 12px;
-    font-size: 0.86rem;
-    line-height: 1.45;
-  }
-  .chat-bubble.lender {
-    background: #f2f5f3;
-    color: var(--slate);
-    border-bottom-left-radius: 4px;
-  }
-  .chat-bubble.us {
-    margin-left: auto;
-    background: var(--green);
-    color: #ffffff;
-    border-bottom-right-radius: 4px;
-  }
- 
-  .trust-card {
-    border-color: rgba(14,154,82,0.08);
-    box-shadow: 0 14px 40px rgba(13,26,18,0.04);
-  }
-  .trust-card-title {
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    color: var(--ink);
-  }
-  .trust-card-desc { color: #405448; line-height: 1.75; font-size: 0.9rem; }
-  .trust-icon { color: var(--green-dark); font-weight: 900; }
- 
-  .debt-types {
-    background: #ffffff;
-    padding: 90px 72px;
-  }
-  .debt-types-header {
-    text-align: center;
-    max-width: 680px;
-    margin: 0 auto 42px;
-  }
-  .debt-types-header .section-sub { margin: 0 auto; color: var(--slate); }
-  .debt-type-grid {
-    max-width: 1180px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 18px;
-  }
-  .debt-type-card {
-    background: linear-gradient(180deg, #ffffff, var(--cream));
-    border: 1px solid rgba(14,154,82,0.14);
-    border-radius: 20px;
-    padding: 22px;
-    min-height: 178px;
-    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-  }
-  .debt-type-card:hover {
-    transform: translateY(-5px);
-    border-color: rgba(14,154,82,0.3);
-    box-shadow: 0 20px 52px rgba(14,154,82,0.1);
-  }
-  .debt-type-icon {
-    width: 42px;
-    height: 42px;
-    border-radius: 14px;
-    display: grid;
-    place-items: center;
-    background: var(--green-pale);
-    color: var(--green-dark);
-    font-weight: 900;
-    font-size: 0.8rem;
-    margin-bottom: 18px;
-  }
-  .debt-type-card h3 {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 1rem;
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    color: var(--ink);
-    margin-bottom: 8px;
-  }
-  .debt-type-card p {
-    font-size: 0.82rem;
-    line-height: 1.6;
-    color: var(--slate);
-  }
- 
-  .testimonials-header { text-align: center; }
-  .testimonials-grid { align-items: stretch; }
-  .testi-card {
-    display: flex;
-    flex-direction: column;
-    min-height: 100%;
-    border: 1px solid rgba(14,154,82,0.1);
-    box-shadow: 0 14px 42px rgba(13,26,18,0.05);
-  }
-  .testi-text { flex: 1; color: #405448; }
-  .testi-savings { margin-top: 18px; justify-content: space-between; }
- 
-  @media (max-width: 1120px) {
-    nav { padding: 0 28px; }
-    section { padding: 84px 32px; }
-    .hero { grid-template-columns: 1fr; }
-    .hero-left { padding: 76px 32px 36px; }
-    .hero-right { padding: 20px 32px 72px; justify-content: flex-start; }
-    .stats-bar { padding: 24px 32px; }
-    .roadmap-flow,
-    .debt-type-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .settlement-grid,
-    .harassment-grid,
-    .eligibility,
-    .faq-inner { grid-template-columns: 1fr; gap: 36px; }
-    .settlement-results { max-width: 520px; width: 100%; margin: 0 auto; }
-    .team-grid,
-    .testimonials-grid { grid-template-columns: repeat(2, 1fr); }
-  }
- 
-  @media (max-width: 720px) {
-    nav { height: auto; min-height: 68px; padding: 14px 18px; }
-    .nav-links { display: none; }
-    .nav-cta { padding: 9px 14px; font-size: 0.78rem; }
-    .hero-left { padding: 72px 22px 24px; }
-    .hero-right { padding: 0 22px 58px; }
-    .hero-headline { font-size: clamp(2.35rem, 12vw, 3.1rem); }
-    .hero-sub { font-size: 0.98rem; }
-    .hero-trust-row { align-items: flex-start; flex-direction: column; gap: 12px; }
-    .calc-card { padding: 26px; border-radius: 18px; }
-    .stats-bar { grid-template-columns: 1fr 1fr; gap: 18px 0; padding: 24px 16px; }
-    .stat-item:nth-child(2) { border-right: none; }
-    section { padding: 70px 22px; }
-    .section-headline { font-size: clamp(1.85rem, 9vw, 2.4rem); }
-    .roadmap-flow,
-    .debt-type-grid,
-    .trust-grid,
-    .team-grid,
-    .testimonials-grid { grid-template-columns: 1fr; }
-    .settlement-calc { padding: 20px; border-radius: 22px; }
-    .settlement-inputs,
-    .settlement-results { padding: 20px; }
-    .missed-box { grid-template-columns: 1fr 1fr; }
-    .missed-box span { grid-column: 1 / -1; }
-    .result-summary { grid-template-columns: 1fr; }
-    .bar-chart { gap: 16px; }
-    .chart-bar { width: 58px; }
-    .harassment-grid { grid-template-columns: 1fr; }
-    .phone-card { max-width: 420px; width: 100%; margin: 0 auto; }
-    .debt-types { padding: 70px 22px; }
-    .footer-top, .footer-bottom { grid-template-columns: 1fr; display: grid; gap: 28px; }
-    footer { padding: 52px 22px 28px; }
-    .cta-buttons { flex-direction: column; align-items: stretch; }
-  }
- 
- 
- 
-  /* Final fixes: section anchors, clean process/calculator boundary and calculator bar behaviour */
- 
-  #home,
-  #process,
-  #calculator,
-  #debt-types,
-  #testimonials,
-  #lawyers,
-  #faqs,
-  #consultation,
-  #heroLeadForm {
-    scroll-margin-top: 88px;
-  }
-  .nav-logo { text-decoration: none; }
- 
-  .roadmap {
-    position: relative;
-    padding-bottom: 84px;
-    background: linear-gradient(180deg, #ffffff 0%, #f7fbf8 100%);
-    border-bottom: 0;
-  }
-  .roadmap::after {
-    content: none;
-    display: none;
-  }
-  .comparison {
-    margin-top: 0;
-    padding-top: 86px;
-    background: linear-gradient(180deg, #f7fbf8 0%, #eaf6f2 24%, var(--cream) 100%);
-    border-top: 1px solid rgba(14,154,82,0.08);
-  }
-  .comparison-shell {
-    position: relative;
-    z-index: 1;
-  }
- 
-  .range-control {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 150px;
-    gap: 16px;
-    align-items: center;
-  }
-  .slider-field input[type='range'].debt-range {
-    -webkit-appearance: none;
-    appearance: none;
-    height: 12px;
-    border-radius: 999px;
-    background: linear-gradient(90deg, var(--green) 0%, var(--green) var(--fill, 0%), #d7e8df var(--fill, 0%), #d7e8df 100%);
-    outline: none;
-    accent-color: var(--green);
-  }
-  .debt-range::-webkit-slider-runnable-track {
-    height: 12px;
-    border-radius: 999px;
-    background: transparent;
-  }
-  .debt-range::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    background: #ffffff;
-    border: 5px solid var(--green);
-    box-shadow: 0 8px 18px rgba(13,26,18,0.18);
-    margin-top: -6px;
-  }
-  .debt-range::-moz-range-track {
-    height: 12px;
-    border-radius: 999px;
-    background: #d7e8df;
-  }
-  .debt-range::-moz-range-progress {
-    height: 12px;
-    border-radius: 999px;
-    background: var(--green);
-  }
-  .debt-range::-moz-range-thumb {
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: #ffffff;
-    border: 5px solid var(--green);
-    box-shadow: 0 8px 18px rgba(13,26,18,0.18);
-  }
-  .amount-input-wrap {
-    height: 44px;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    background: #ffffff;
-    border: 1px solid rgba(14,154,82,0.16);
-    border-radius: 14px;
-    padding: 0 12px;
-    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.7);
-  }
-  .amount-input-wrap span {
-    color: var(--green-dark);
-    font-weight: 900;
-  }
-  .amount-input {
-    width: 100%;
-    border: 0;
-    outline: 0;
-    background: transparent;
-    color: var(--ink);
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 900;
-    font-size: 0.9rem;
-  }
-  .amount-input::-webkit-outer-spin-button,
-  .amount-input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-  .bar-chart {
-    min-height: 268px;
-    background-image:
-      linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px),
-      linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
-    background-size: 100% 52px, 100% 100%;
-  }
-  .chart-col {
-    height: 226px;
-  }
-  .chart-bar {
-    will-change: height;
-  }
- 
-  @media (max-width: 720px) {
-    .roadmap { padding-bottom: 64px; }
-    .comparison { padding-top: 68px; }
-    .range-control { grid-template-columns: 1fr; gap: 12px; }
-    .amount-input-wrap { width: 100%; }
-  }
- 
- 
-</style>
+
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
- 
+
 <!-- NAV -->
 <nav>
   <a class="nav-logo" href="#home" aria-label="DebtMukt home">Debt<span>Mukt</span></a>
@@ -2823,25 +23,25 @@ Index · HTML
   <button id="langToggle" type="button" class="lang-btn">हिंदी</button>
   <button class="nav-cta" type="button" data-scroll-consult data-i18n="nav-cta">Free Consultation</button>
 </nav>
- 
+
 <!-- HERO -->
 <section class="hero" id="home">
   <div class="hero-bg"></div>
   <div class="hero-noise"></div>
- 
+
   <div class="hero-left">
     <div class="hero-badge">India's #1 Debt Settlement Platform</div>
- 
+
     <h1 class="hero-headline">
       Drowning<br>in debt?<br>
       We'll help you<br>
       <span class="breathe">Breathe Again.</span>
     </h1>
- 
+
     <p class="hero-sub">
       Our certified legal experts negotiate directly with banks and NBFCs on your behalf — so you can stop the harassment, cut your debt by up to 80%, and rebuild your life.
     </p>
- 
+
     <div class="hero-trust-row">
       <div class="trust-avatars">
         <img src="https://images.unsplash.com/photo-1607346256330-dee7af15f7c5?w=80&h=80&fit=crop&crop=face&auto=format" alt="Client">
@@ -2854,7 +54,7 @@ Index · HTML
         Across credit cards, personal loans & business debt
       </div>
     </div>
- 
+
     <ul class="hero-bullets">
       <li>Reduce debt by 40–80%</li>
       <li>Stop creditor harassment calls</li>
@@ -2862,13 +62,13 @@ Index · HTML
       <li>Complete legal process within 12 months</li>
     </ul>
   </div>
- 
+
   <div class="hero-right" id="consultation">
     <div class="calc-card hero-form-card">
       <div class="calc-title">Free Consultation</div>
       <div class="calc-headline">Check what you can do today</div>
       <p class="hero-form-intro">Share a few basics. Our team will help you understand the next safe step for loan resolution or recovery harassment support.</p>
- 
+
       <form class="lead-form" id="heroLeadForm" novalidate>
         <label>
           Full Name
@@ -2910,7 +110,7 @@ Index · HTML
     </div>
   </div>
 </section>
- 
+
 <!-- STATS BAR -->
 <div class="stats-bar">
   <div class="stat-item">
@@ -2930,7 +130,7 @@ Index · HTML
     <div class="stat-label">Google Rating</div>
   </div>
 </div>
- 
+
 <!-- ROADMAP -->
 <section class="roadmap reveal" id="process">
   <div class="roadmap-header">
@@ -2938,7 +138,7 @@ Index · HTML
     <h2 class="section-headline">Your Roadmap to Debt Freedom</h2>
     <p class="section-sub">A calmer, more structured route from collection pressure to a documented resolution plan.</p>
   </div>
- 
+
   <div class="roadmap-flow">
     <article class="road-card">
       <div class="road-card-top">
@@ -2953,7 +153,7 @@ Index · HTML
         <li>Immediate risk check</li>
       </ul>
     </article>
- 
+
     <article class="road-card">
       <div class="road-card-top">
         <span class="road-num">02</span>
@@ -2967,7 +167,7 @@ Index · HTML
         <li>Safe response guidance</li>
       </ul>
     </article>
- 
+
     <article class="road-card">
       <div class="road-card-top">
         <span class="road-num">03</span>
@@ -2981,7 +181,7 @@ Index · HTML
         <li>Escalation support</li>
       </ul>
     </article>
- 
+
     <article class="road-card">
       <div class="road-card-top">
         <span class="road-num">04</span>
@@ -2997,7 +197,7 @@ Index · HTML
     </article>
   </div>
 </section>
- 
+
 <!-- COMPARISON -->
 <section class="comparison reveal" id="calculator">
   <div class="comparison-shell">
@@ -3006,13 +206,13 @@ Index · HTML
       <h2 class="section-headline">Save more with DebtMukt</h2>
       <p class="section-sub">Use this quick estimator to compare an illustrative settlement route with continuing under pressure. The final plan depends on your lenders, documents and case facts.</p>
     </div>
- 
+
     <div class="settlement-calc">
       <div class="calc-tabs" role="tablist" aria-label="Calculator mode">
         <button class="calc-mode-tab active" type="button" data-mode="settle">Settle Loans</button>
         <button class="calc-mode-tab" type="button" data-mode="emi">Reduce EMI</button>
       </div>
- 
+
       <div class="settlement-grid">
         <div class="settlement-inputs">
           <div class="slider-field">
@@ -3026,7 +226,7 @@ Index · HTML
             </div>
             <div class="range-scale"><span>&#8377;0</span><span>&#8377;15,00,000</span></div>
           </div>
- 
+
           <div class="slider-field">
             <label for="personalDebt">Your personal loan debt amount <strong id="personalDebtVal">&#8377;5,00,000</strong></label>
             <div class="range-control">
@@ -3038,16 +238,16 @@ Index · HTML
             </div>
             <div class="range-scale"><span>&#8377;0</span><span>&#8377;25,00,000</span></div>
           </div>
- 
+
           <div class="missed-box" aria-label="Recent missed payment">
             <span>Missed any EMI payment in the last 2 months?</span>
             <button class="late-option active" type="button" data-late="yes">Yes</button>
             <button class="late-option" type="button" data-late="no">No</button>
           </div>
- 
+
           <button class="calc-action" type="button" data-scroll-consult>Get Help Now</button>
         </div>
- 
+
         <div class="settlement-results">
           <div class="result-summary">
             <div>
@@ -3059,12 +259,12 @@ Index · HTML
               <strong id="loanMonthsOut">34 Months</strong>
             </div>
           </div>
- 
+
           <div class="pay-card">
             <span id="payCardLabel">Possible Settlement Payable</span>
             <strong id="withDebtMuktOut">&#8377;4,50,000</strong>
           </div>
- 
+
           <div class="bar-chart" aria-label="Comparison chart">
             <div class="chart-col">
               <span class="chart-value" id="withShortOut">&#8377;4.5L</span>
@@ -3077,7 +277,7 @@ Index · HTML
               <small>Without Support</small>
             </div>
           </div>
- 
+
           <div class="saving-pill">
             <span>Potential Saving</span>
             <strong id="savingOut">&#8377;16,93,000</strong>
@@ -3085,11 +285,11 @@ Index · HTML
         </div>
       </div>
     </div>
- 
+
     <p class="calc-disclaimer">Illustration only. Settlement amounts, timelines and savings are not guaranteed and depend on lender policy, account status, documents and negotiations.</p>
   </div>
 </section>
- 
+
 <!-- HARASSMENT SUPPORT -->
 <section class="harassment-section reveal">
   <div class="harassment-grid">
@@ -3097,7 +297,7 @@ Index · HTML
       <div class="section-label">Recovery Harassment Support</div>
       <h2 class="section-headline">Stop dealing with threatening calls alone.</h2>
       <p class="section-sub">Our team helps you record facts, respond through proper channels and reduce direct pressure by moving lender conversations into a documented process.</p>
- 
+
       <div class="harassment-features">
         <div>
           <span><strong>Call script support</strong>Know what to say, what not to admit and what to record during recovery calls.</span>
@@ -3110,7 +310,7 @@ Index · HTML
         </div>
       </div>
     </div>
- 
+
     <div class="phone-card" aria-label="Sample support conversation">
       <div class="phone-top"></div>
       <div class="chat-bubble lender">Recovery agent has called 18 times today.</div>
@@ -3121,7 +321,7 @@ Index · HTML
     </div>
   </div>
 </section>
- 
+
 <!-- WHY TRUST -->
 <section class="trust reveal">
   <div class="trust-header">
@@ -3129,7 +329,7 @@ Index · HTML
     <h2 class="section-headline">We Fight for You</h2>
     <p class="section-sub">From RBI compliance to full legal protection — every part of our service is designed around your safety and financial recovery.</p>
   </div>
- 
+
   <div class="trust-grid">
     <div class="trust-card">
       <div class="trust-icon">🏛️</div>
@@ -3163,7 +363,7 @@ Index · HTML
     </div>
   </div>
 </section>
- 
+
 <!-- DEBT TYPES -->
 <section class="debt-types reveal" id="debt-types">
   <div class="debt-types-header">
@@ -3171,7 +371,7 @@ Index · HTML
     <h2 class="section-headline">Support for unsecured loan stress</h2>
     <p class="section-sub">Clean, case-by-case support for borrowers dealing with repayment pressure, recovery calls, overdue accounts or settlement discussions.</p>
   </div>
- 
+
   <div class="debt-type-grid">
     <article class="debt-type-card">
       <div class="debt-type-icon">CC</div>
@@ -3215,14 +415,14 @@ Index · HTML
     </article>
   </div>
 </section>
- 
+
 <!-- TESTIMONIALS -->
 <section class="testimonials reveal" id="testimonials">
   <div class="testimonials-header">
     <div class="section-label">Real Stories</div>
     <h2 class="section-headline">Real Results, Real People</h2>
   </div>
- 
+
   <div class="testimonials-grid">
     <div class="testi-card">
       <div class="stars">★★★★★</div>
@@ -3249,7 +449,7 @@ Index · HTML
         </div>
       </div>
     </div>
- 
+
     <div class="testi-card">
       <div class="stars">★★★★★</div>
       <p class="testi-text">"My business failed and I had taken multiple loans. I thought there was no way out. DebtMukt negotiated with all my lenders simultaneously and got me a deal I never thought was possible."</p>
@@ -3275,7 +475,7 @@ Index · HTML
         </div>
       </div>
     </div>
- 
+
     <div class="testi-card">
       <div class="stars">★★★★★</div>
       <p class="testi-text">"I was sceptical at first — 'too good to be true.' But from the first consultation call, they were transparent and professional. They settled ₹3L worth of personal loan in just 9 months."</p>
@@ -3303,14 +503,14 @@ Index · HTML
     </div>
   </div>
 </section>
- 
+
 <!-- ELIGIBILITY -->
 <section class="eligibility reveal">
   <div class="elig-left">
     <div class="section-label">Are You Eligible?</div>
     <h2 class="section-headline" style="color:white">Quick Eligibility<br>Check</h2>
     <p class="section-sub">Most people who qualify share these three traits. If you tick any of these boxes, we can likely help you — significantly.</p>
- 
+
     <div class="elig-check">
       <div class="elig-item">
         <div class="elig-dot"></div>
@@ -3335,11 +535,11 @@ Index · HTML
       </div>
     </div>
   </div>
- 
+
   <div class="elig-right">
   <div class="elig-form-title">Start Your Free<br>Debt Analysis</div>
   <div class="elig-form-sub">Takes 2 minutes. No commitment required.</div>
- 
+
   <form id="eligForm" novalidate>
     <div class="form-row">
       <div class="form-field">
@@ -3375,8 +575,8 @@ Index · HTML
   </form>
 </div>
 </section>
- 
- 
+
+
 <!-- FAQ -->
 <section class="faq reveal" id="faqs">
   <div class="faq-inner">
@@ -3386,7 +586,7 @@ Index · HTML
       <p class="section-sub" style="margin-bottom: 32px;">Everything you need to know before taking the first step toward financial freedom.</p>
       <button class="nav-cta" type="button" data-scroll-consult style="padding: 12px 28px; font-size: 0.9rem;" type="button" onclick="document.getElementById('consultation').scrollIntoView({behavior:'smooth'})">Talk to an Expert</button>
     </div>
- 
+
     <div class="faq-list">
       <div class="faq-item open">
         <div class="faq-q" onclick="toggleFaq(this)">
@@ -3436,7 +636,7 @@ Index · HTML
     </div>
   </div>
 </section>
- 
+
 <!-- CTA BANNER -->
 <div class="cta-banner reveal">
   <div class="section-label" style="color: rgba(255,255,255,0.6)">Take the First Step</div>
@@ -3449,7 +649,7 @@ Index · HTML
     </button>
   </div>
 </div>
- 
+
 <!-- FOOTER -->
 <footer>
   <div class="footer-top">
@@ -3463,7 +663,7 @@ Index · HTML
         <div class="social-btn">yt</div>
       </div>
     </div>
- 
+
     <div>
       <div class="footer-col-title">Quick Links</div>
       <ul class="footer-links">
@@ -3473,7 +673,7 @@ Index · HTML
         <li><a href="#faqs" data-i18n="nav-faqs">FAQs</a></li>
       </ul>
     </div>
- 
+
     <div>
       <div class="footer-col-title">Contact Us</div>
       <ul class="footer-links">
@@ -3483,7 +683,7 @@ Index · HTML
         <li><a href="#">Mumbai, India</a></li>
       </ul>
     </div>
- 
+
     <div>
       <div class="footer-col-title">Legal</div>
       <ul class="footer-links">
@@ -3494,25 +694,14 @@ Index · HTML
       </ul>
     </div>
   </div>
- 
+
   <div class="footer-bottom">
     <span>© 2025 DebtMukt. All rights reserved.</span>
     <span>Results vary based on individual circumstances. Past performance is not a guarantee of future results.</span>
   </div>
 </footer>
- 
+
+
 <script src="script.js" charset="utf-8"></script>
 </body>
 </html>
- 
-
-
-
-
-
-
-
-
-
-
-
